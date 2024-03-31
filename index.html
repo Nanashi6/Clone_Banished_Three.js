@@ -3,18 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #root-window {
+            height: 100%;
+        }
+
+        #render-target {
+            height: 100%;
+            position: relative;
+        }
+    </style>
+
     <title>Game</title>
 </head>
 <body>
-    
+    <div id="root-window">
+        <div id="render-target">
+
+        </div>
+    </div>
 </body>
 
 <script type="importmap">
     {
       "imports": {
-        "three": "./node_modules/three/build/three.module.js"
+        "three": "./node_modules/three/build/three.module.js",
+        "cameraManager": "./src/CameraManager.js"
       }
     }
 </script>
+
+<script type="module" src="./src/Game.js"></script>
+<script type="module" src="./src/GameUI.js"></script>
 
 </html>
