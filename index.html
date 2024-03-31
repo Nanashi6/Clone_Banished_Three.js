@@ -3,20 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.png">
 
     <style>
         html, body {
             height: 100%;
+            width: 100%;
             margin: 0;
         }
 
         #root-window {
             height: 100%;
+            width: 100%;
         }
 
         #render-target {
             height: 100%;
+            width: 100%;
             position: relative;
+        }
+        .ui {
+            display: flex;
+            flex-direction: row;
+            position: absolute;
+            height: auto;
+            width: 100%;
+        }
+        .building-selector {
+            display: flex;
+            flex-direction: row;
+            width: 60%;
+        }
+        .building-selector > button {
+            text-wrap: wrap;
+            text-align: center;
+            vertical-align: middle;
         }
     </style>
 
@@ -25,7 +46,19 @@
 <body>
     <div id="root-window">
         <div id="render-target">
-
+            <div class="ui">
+                <div class="building-selector">
+                    <button data-type="Home" onclick="ui.onToolSelected(event)">Home</button>
+                    <!-- <button data-type="HuntingCabin" onclick="ui.onToolSelected(event)">Hunting Cabin</button>
+                    <button data-type="ForesterLodge" onclick="ui.onToolSelected(event)">Forester Lodge</button>
+                    <button data-type="TownHall" onclick="ui.onToolSelected(event)">Town Hall</button>
+                    <button data-type="StorageBarn" onclick="ui.onToolSelected(event)">Storage Barn</button>
+                    <button data-type="StockPile" onclick="ui.onToolSelected(event)">Stock Pile</button>
+                    <button data-type="CropField" onclick="ui.onToolSelected(event)">Crop Field</button>
+                    <button data-type="Mine" onclick="ui.onToolSelected(event)">Mine</button>
+                    <button data-type="Quarry" onclick="ui.onToolSelected(event)">Quarry</button>
+                    <button data-type="WoodCutter" onclick="ui.onToolSelected(event)">Wood Cutter</button> -->
+                </div>
         </div>
     </div>
 </body>
@@ -33,8 +66,7 @@
 <script type="importmap">
     {
       "imports": {
-        "three": "./node_modules/three/build/three.module.js",
-        "cameraManager": "./src/CameraManager.js"
+        "three": "./node_modules/three/build/three.module.js"
       }
     }
 </script>
