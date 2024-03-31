@@ -62,6 +62,7 @@ export class Game {
       this.renderer.setSize(this.gameWindow.offsetWidth, this.gameWindow.offsetHeight);
     }
 }
+
 window.onload = () => {
     window.game = new Game(200);
 }
