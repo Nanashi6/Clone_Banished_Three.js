@@ -1,3 +1,6 @@
+/**
+ * Типы ресурсов
+ */
 export const ResourceTypes = {
     Wood: 'Wood',
     Iron: 'Iron',
