@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { CameraManager } from 'cameraManager';
+import { CameraManager } from './CameraManager.js';
 
 export class Game {
     gameWindow;
