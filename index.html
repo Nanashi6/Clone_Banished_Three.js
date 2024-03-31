@@ -3,18 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #root-window {
+            height: 100%;
+        }
+
+        #render-target {
+            height: 100%;
+            position: relative;
+        }
+
+        .ui {
+            display: flex;
+            flex-direction: row;
+            position: absolute;
+            height: auto;
+            width: 100%;
+        }
+        .building-selector {
+            display: flex;
+            flex-direction: row;
+            width: 60%;
+        }
+        .building-selector > button {
+            text-wrap: wrap;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .resources {
+            display: flex;
+            flex-direction: row;
+            width: 40%;
+        }
+    </style>
+
     <title>Game</title>
 </head>
 <body>
-    
+    <div id="root-window">
+        <div id="render-target">
+
+        </div>
+    </div>
 </body>
 
 <script type="importmap">
     {
       "imports": {
-        "three": "./node_modules/three/build/three.module.js"
+        "three": "./node_modules/three/build/three.module.js",
+        "cameraManager": "./src/CameraManager.js"
       }
     }
 </script>
+<script type="module" src="./src/Game.js"></script>
 
 </html>
