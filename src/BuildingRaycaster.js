@@ -38,10 +38,10 @@ export class BuildingRaycaster {
     /**
      * Создает макет здания, которое игрок хочет построить
      */
-    updateBuildHighlighter(buildingId) {
+    updateBuildHighlighter(buildingType) {
         this.scene.remove(this.highlighter);
 
-        const building = CreateBuilding(buildingId);
+        const building = CreateBuilding(buildingType);
 
         if(building != undefined) {
             this.highlighter = new THREE.Mesh(
@@ -74,7 +74,7 @@ export class BuildingRaycaster {
 
                 this.highlighter.position.set(highlightPos.x, this.plane.position.y + 0.001, highlightPos.z);
         
-                const objectExist = false;//window.game.city.getBuildingsAndTerrainObjects().find(obj => this.hasIntersect(obj));
+                const objectExist = window.game.city.Buildings.find(obj => this.hasIntersect(obj));
                 
                 if (!objectExist /*&& this.selectedBuilding.checkRequirement()*/)
                     this.highlighter.material.color.setHex(0xFFFFFF);
@@ -100,7 +100,7 @@ export class BuildingRaycaster {
      * Метод строительства здания
      */
     #build() {
-        const objectExist = false; // window.game.city.getBuildingsAndTerrainObjects().find(obj => this.hasIntersect(obj));
+        const objectExist = window.game.city.Buildings.find(obj => this.hasIntersect(obj));
 
         if (!objectExist /*&& this.selectedBuilding.checkRequirement()*/) {
             if (this.intersects.length > 0) {
@@ -109,6 +109,7 @@ export class BuildingRaycaster {
                 buildingClone.position.set(this.highlighter.position.x, this.plane.position.y + this.selectedBuilding.geometry.parameters.height / 2, this.highlighter.position.z);
 
                 this.scene.add(buildingClone);
+                window.game.city.addBuilding(buildingClone);
 
                 this.highlighter.material.color.setHex(0xFF0000); ////////////////////////////
             }

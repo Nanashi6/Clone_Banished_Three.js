@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { CameraManager } from './CameraManager.js';
 import { BuildingRaycaster } from './BuildingRaycaster.js';
+import { City } from './City.js';
 
 export class Game {
     gameWindow;
@@ -14,6 +15,8 @@ export class Game {
     gridSize;
   
     plane;
+
+    city;
 
     buildingRaycaster;
   
@@ -52,6 +55,8 @@ export class Game {
       // Скрываем отображение ячеек грида
       this.grid.visible = true;
   
+      this.city = new City();
+
       this.buildingRaycaster = new BuildingRaycaster(this.cameraManager.camera, this.plane, this.scene);
 
       this.renderer.setAnimationLoop(this.animate);
