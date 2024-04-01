@@ -61,7 +61,7 @@ export class City {
     addCitizens(newCitizensCount) {
         for(let i = 0; i < newCitizensCount; i++) {
             this.addCitizen(new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff})));
-            //TODO: Внутри жителя сделать конструктор обращающийся к obj объекту жителя
+            //TODO: Внутри жителя сделать конструктор обращающийся к obj объекту жителя (Внутри City не должно быть THREE объектов)
         }
     }
 
