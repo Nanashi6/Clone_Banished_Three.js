@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { CameraManager } from './CameraManager.js';
 import { BuildingRaycaster } from './BuildingRaycaster.js';
 import { City } from './City.js';
+import { StorageManager } from './StorageManager.js';
 
 export class Game {
     gameWindow;
@@ -17,6 +18,7 @@ export class Game {
     plane;
 
     city;
+    storageManager;
 
     buildingRaycaster;
   
@@ -50,12 +52,13 @@ export class Game {
       this.plane.visible = true;
   
       this.grid = new THREE.GridHelper(this.gridSize, this.gridSize);
-      this.grid.position.set(this.plane.position.x, this.plane.position.y, this.plane.position.z);
+      this.grid.position.set(this.plane.position.x, this.plane.position.y + 0.01, this.plane.position.z);
       this.scene.add(this.grid);
       // Скрываем отображение ячеек грида
       this.grid.visible = true;
   
       this.city = new City();
+      this.storageManager = new StorageManager();
 
       this.buildingRaycaster = new BuildingRaycaster(this.cameraManager.camera, this.plane, this.scene);
 
@@ -63,6 +66,7 @@ export class Game {
     }
   
     animate = () => {
+      window.ui.updateResourceInfoPanel(this.storageManager.ResourcesCount);
       this.renderer.render(this.scene, this.camera);
     }
   
