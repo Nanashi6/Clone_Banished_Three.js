@@ -20,12 +20,56 @@ export class StorageManager {
     constructor() {}
 
     /**
+     * Изменяет максимальное кол-во ресурса
+     * @param {ResourceTypes} resourceType - Тип ресурса
+     * @param {number} value - Кол-во изменения (положительное или отрицательное)
+     * @returns {boolean} - Сообщение о успешности изменения максимального кол-ва
+     */
+    updateResourcesMaxCount(resourceType, value) {
+        let newMaxCount = 0;
+        switch(resourceType) {
+            case ResourceTypes.Iron:
+                newMaxCount = this.#resourcesMaxCount.Iron + value;
+                if(newMaxCount < this.#resourcesMaxCount.Iron && this.#resourcesCount.Iron > newMaxCount) {
+                    return false;
+                }
+                this.#resourcesMaxCount.Iron = newMaxCount;
+                break;
+            case ResourceTypes.Stone:
+                newMaxCount = this.#resourcesMaxCount.Stone + value;
+                if(newMaxCount < this.#resourcesMaxCount.Stone && this.#resourcesCount.Stone > newMaxCount) {
+                    return false;
+                }
+                this.#resourcesMaxCount.Stone = newMaxCount;
+                break;
+            case ResourceTypes.Wood:
+                newMaxCount = this.#resourcesMaxCount.Wood + value;
+                if(newMaxCount < this.#resourcesMaxCount.Wood && this.#resourcesCount.Wood > newMaxCount) {
+                    return false;
+                }
+                this.#resourcesMaxCount.Wood = newMaxCount;
+                break;
+            case ResourceTypes.Food:
+                newMaxCount = this.#resourcesMaxCount.Food + value;
+                if(newMaxCount < this.#resourcesMaxCount.Food && this.#resourcesCount.Food > newMaxCount) {
+                    return false;
+                }
+                this.#resourcesMaxCount.Food = newMaxCount;
+                break;
+            default:
+                console.error("Указан неизвестный ресурс");
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * Увеличивает кол-во указанного ресурса на значение value 
      * @param {ResourceTypes} resourceType 
      * @param {number} value 
      * @returns {number} - Остаточное кол-во ресурса, котороене поместилось на склад
      */
-    addResources(resourceType, value) {
+    addResource(resourceType, value) {
         let resid = 0;
         switch(resourceType) {
             case ResourceTypes.Iron:
@@ -81,7 +125,7 @@ export class StorageManager {
      * @param {number} value 
      * @returns {boolean} - Сообщение о успешности уменьшения ресурсов
      */
-    reduceResources(resourceType, value) {
+    reduceResource(resourceType, value) {
         switch(resourceType) {
             case ResourceTypes.Iron:
                 if(this.#resourcesCount.Iron - value < 0) {
