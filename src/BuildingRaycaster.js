@@ -108,9 +108,13 @@ export class BuildingRaycaster {
 
                 buildingClone.position.set(this.highlighter.position.x, this.plane.position.y + this.selectedBuilding.geometry.parameters.height / 2, this.highlighter.position.z);
 
-                this.scene.add(buildingClone);
-                window.game.city.addBuilding(buildingClone);
-
+                let buildAccepted = buildingClone.build();
+                /*
+                if (!buildAccepted) {
+                    // this.scene.add(buildingClone);
+                    window.game.city.addConstructionSite(buildingClone);
+                } 
+                */
                 this.highlighter.material.color.setHex(0xFF0000); ////////////////////////////
             }
         }

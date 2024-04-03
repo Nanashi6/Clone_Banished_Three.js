@@ -25,9 +25,18 @@ export class City {
 
     constructor() {}
 
+    simulate() {
+        this.#structures.constructionSites.forEach(element => {
+            element.work();
+        });
+    }
+
     //#region Structures
     addBuilding(building) {
         this.#structures.buildings.push(building);
+
+        // Добавление на сцену
+        window.game.scene.add(building);
     }
 
     removeBuilding(building) {
@@ -35,10 +44,16 @@ export class City {
         if (index !== -1) {
             this.#structures.buildings.splice(index, 1); // Удаляем объект и получаем его
         }
+        
+        // Удаление со сцены
+        window.game.scene.remove(building);
     }
 
     addConstructionSite(constructionSite) {
         this.#structures.constructionSites.push(constructionSite);
+
+        // Добавление на сцену
+        window.game.scene.add(constructionSite);
     }
 
     removeConstructionSite(constructionSite) {
@@ -46,6 +61,9 @@ export class City {
         if (index !== -1) {
             this.#structures.constructionSites.splice(index, 1); // Удаляем объект и получаем его
         }
+        
+        // Удаление со сцены
+        window.game.scene.remove(constructionSite);
     }
     //#endregion
     

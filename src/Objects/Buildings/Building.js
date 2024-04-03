@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { ResourceTypes } from 'resourceTypes';
 
 export class Building extends THREE.Mesh {
     requirementResource = {
@@ -7,6 +8,8 @@ export class Building extends THREE.Mesh {
         Wood: 0,
         Food: 0
     };
+
+    #returnRate = 0.4;
     
     /**
      * @param {THREE.BufferGeometry} geometry 
@@ -18,7 +21,7 @@ export class Building extends THREE.Mesh {
 
     /**
      * Проверяет наличие ресурсов, необходимых для постройки
-     * @returns {Boolean} 
+     * @returns {boolean} 
      */
     checkRequirement() {
         // TODO: Сделать отдельный класс с методом сравнения ресурсов, чтобы не сравнивать каждый ресурс поотдельности
@@ -30,7 +33,36 @@ export class Building extends THREE.Mesh {
             }
         return false;    
     }
+
+    /**
+     * Начало строительство здания
+     * @returns {boolean} - Сообщение о успешности
+     */
+    startBuild() {
+        let check = window.game.storageManager.reduceResources(this.requirementResource);
+        return check;
+    }
+
+    
+    endBuild() {
+        // TODO: Добавляются бонусы от здания
+        throw new Error('Метод endBuild должен быть переопреден в наследниках');
+    }
+
+    /**
+     * Метод для уничтожения здания
+     */
+    destroy() {
+        window.game.city.removeBuilding(this);
+        this.returnResources();
+    }
+
+    returnResources() {
+        let resources = {};
+        for (let key in requirementResource) {
+            resources[key] = requirementResource[key] * this.#returnRate;
+        }
+        window.game.storageManager.addResources(resources);
+    }
 }
 // TODO: Сделать дом, 4 вида хранилищ и ратушу
-// TODO: Методы взаимодействия для жителей 
-

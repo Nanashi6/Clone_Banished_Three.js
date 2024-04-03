@@ -119,6 +119,13 @@ export class StorageManager {
         return resid;
     }
 
+    addResources(resources) {
+        this.addResource(ResourceTypes.Iron, resources.Iron);
+        this.addResource(ResourceTypes.Wood, resources.Wood);
+        this.addResource(ResourceTypes.Stone, resources.Stone);
+        this.addResource(ResourceTypes.Food, resources.Food);
+    }
+
     /**
      * Уменьшает кол-во указанного ресурса на значение value 
      * @param {ResourceTypes} resourceType 
@@ -155,6 +162,18 @@ export class StorageManager {
                 console.error("Указан неизвестный ресурс");
                 return false;
         }
+        return true;
+    }
+
+    reduceResources(resources) {
+        let check = window.game.storageManager.reduceResource(ResourceTypes.Iron, resources.Iron);
+        if(!check) return false;
+        check = window.game.storageManager.reduceResource(ResourceTypes.Wood, resources.Wood);
+        if(!check) return false;
+        check = window.game.storageManager.reduceResource(ResourceTypes.Stone, resources.Stone);
+        if(!check) return false;
+        check = window.game.storageManager.reduceResource(ResourceTypes.Food, resources.Food);
+        if(!check) return false;
         return true;
     }
 }

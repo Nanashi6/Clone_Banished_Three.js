@@ -32,6 +32,8 @@ export class TerrainResource extends THREE.Mesh {
         // (Придумать как отменить задание при отмене сбора)
         if(collect && --this.userData.workScore == 0) { 
             console.log(`Добыт ресурс ${this.userData.type}`);
+            // TODO: Удалить со сцены
+            // TODO: Удалить таску на добычу
             return true;
         }
         return false;

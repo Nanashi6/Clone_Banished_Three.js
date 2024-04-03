@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { ResourceType } from 'resourceType';
 
-// TODO: Данный класс находится под угрозой удаления, т.к. поднимаемые ресурсфы это лишняя работа))))
 export class PickableResource extends THREE.Mesh {
     /**
      * @param {ResourceType} type - Тип ресурса
@@ -13,6 +12,8 @@ export class PickableResource extends THREE.Mesh {
         this.userData.type = type;
         this.userData.value = 1;
     }
+
+    // Создать метод вызываемый при первом появлении ресурса и добавляющий таск на перенос
 
     take() {
         // TODO: Удаление со сцены

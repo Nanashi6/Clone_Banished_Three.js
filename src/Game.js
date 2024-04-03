@@ -67,6 +67,7 @@ export class Game {
   
     animate = () => {
       window.ui.updateResourceInfoPanel(this.storageManager.ResourcesCount);
+      this.city.simulate();
       this.renderer.render(this.scene, this.camera);
     }
   
@@ -80,3 +81,8 @@ export class Game {
 window.onload = () => {
     window.game = new Game(200);
 }
+
+// TODO: Реализовать постепенное строительство зданий************
+// TODO: Добыча ресурсов и перенос на склады
+// TODO: Реализовать таски 
+
