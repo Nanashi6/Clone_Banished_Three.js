@@ -25,13 +25,13 @@ export class Building extends THREE.Mesh {
      */
     checkRequirement() {
         // TODO: Сделать отдельный класс с методом сравнения ресурсов, чтобы не сравнивать каждый ресурс поотдельности
-        if(window.game.storageManager.Iron >= this.requirementResource.Iron &&
-            window.game.storageManager.Stone >= this.requirementResource.Stone &&
-            window.game.storageManager.Wood >= this.requirementResource.Wood &&
-            window.game.storageManager.Food >= this.requirementResource.Food) {
-                return true;
+        if(window.game.storageManager.Iron <= this.requirementResource.Iron &&
+            window.game.storageManager.Stone <= this.requirementResource.Stone &&
+            window.game.storageManager.Wood <= this.requirementResource.Wood &&
+            window.game.storageManager.Food <= this.requirementResource.Food) {
+                return false;
             }
-        return false;    
+        return true;    
     }
 
     /**
@@ -42,7 +42,6 @@ export class Building extends THREE.Mesh {
         let check = window.game.storageManager.reduceResources(this.requirementResource);
         return check;
     }
-
     
     endBuild() {
         // TODO: Добавляются бонусы от здания

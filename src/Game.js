@@ -3,6 +3,9 @@ import { CameraManager } from './CameraManager.js';
 import { BuildingRaycaster } from './BuildingRaycaster.js';
 import { City } from './City.js';
 import { StorageManager } from './StorageManager.js';
+import { TaskManager } from './TaskManager.js';
+import { Citizen } from './Objects/Citizens/Citizen.js';
+import { CreateTerrainResource } from './Objects/Resources/TerrainResources/TerrainResourcesFactory.js';
 
 export class Game {
     gameWindow;
@@ -19,6 +22,7 @@ export class Game {
 
     city;
     storageManager;
+    taskManager;
 
     buildingRaycaster;
   
@@ -59,6 +63,7 @@ export class Game {
   
       this.city = new City();
       this.storageManager = new StorageManager();
+      this.taskManager = new TaskManager();
 
       this.buildingRaycaster = new BuildingRaycaster(this.cameraManager.camera, this.plane, this.scene);
 
@@ -80,9 +85,18 @@ export class Game {
 
 window.onload = () => {
     window.game = new Game(200);
+
+    let citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+    citizen.position.y = -0.5;
+    window.game.city.addCitizen(citizen);
+    window.game.scene.add(citizen);
+
+    let wood = CreateTerrainResource('Wood', 0, 5);
+    wood.collect();
+    window.game.scene.add(wood);
 }
 
-// TODO: Реализовать постепенное строительство зданий************
-// TODO: Добыча ресурсов и перенос на склады
-// TODO: Реализовать таски 
-
+// TODO: Снос здания также через объект-обёртку над зданием (work - уничтожает здание по итогу)
+// TODO: добыча ресурсов
+// TODO: ВЫделитель для добычи ресурсов
+// TODO: taskExist должен содержать специальный блок для сбора ресурсов

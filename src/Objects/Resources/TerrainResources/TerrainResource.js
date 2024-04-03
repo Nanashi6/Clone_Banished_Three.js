@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { TaskTypes } from '../../../TaskManager.js';
 
 /**
  * Представляет собой объект окружения из которого можно добыть ресурс
@@ -21,6 +22,12 @@ export class TerrainResource extends THREE.Mesh {
      */
     collect() {
         this.userData.collect = !this.userData.collect;
+        if (this.userData.collect) {
+            window.game.taskManager.createTask(this, TaskTypes.Collect);
+        }
+        else {
+            window.game.taskManager.deleteTask(this, TaskTypes.Collect);
+        }
     }
 
     /**
@@ -30,10 +37,14 @@ export class TerrainResource extends THREE.Mesh {
     work() {
         // TODO: Есть шанс, что ресурс перестанет быть отмечен как доступный для сбора и житель просто будет стоять рядом 
         // (Придумать как отменить задание при отмене сбора)
-        if(collect && --this.userData.workScore == 0) { 
+        if(this.userData.collect && --this.userData.workScore == 0) { 
             console.log(`Добыт ресурс ${this.userData.type}`);
-            // TODO: Удалить со сцены
-            // TODO: Удалить таску на добычу
+
+            // Добавление добытого ресурса на склад
+            window.game.storageManager.addResource(this.userData.type, 1);
+
+            window.game.scene.remove(this);
+            window.game.taskManager.deleteTask(this, TaskTypes.Collect);
             return true;
         }
         return false;

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { CitizenTypes } from './CitizenTypes.js';
+import { CitizenStates } from './CitizenStates.js';
 
 export class Citizen extends THREE.Mesh {
     /**
@@ -7,14 +8,91 @@ export class Citizen extends THREE.Mesh {
      * @param {THREE.BufferGeometry} geometry 
      * @param {THREE.Material} material 
      */
-    constructor(type, geometry, material) {
+    constructor(geometry, material) {
         super(geometry, material);
-        this.userData.type = type;
+        this.userData.currentState = CitizenStates.Idle;
+        this.userData.task = undefined;
+        this.userData.walkSpeed = 0.1;
     }
 
-    simulate() {}
+    cancelTask() {
+        this.userData.currentState = CitizenStates.Idle;
+        this.userData.task = undefined;
+    }
 
-    idle() {}
+    /**
+     * Симуляция текущего состояния
+     */
+    simulate() {
+        switch(this.userData.currentState) {
+            case CitizenStates.Idle:
+                this.idle();
+                break;
+            case CitizenStates.Work:
+                this.work();
+                break;
+            default:
+                console.error(`${this.userData.currentState} это неизвестное состояние`);
+        }
+    }    
 
-    work() {}
+    idle() {
+        this.userData.task = window.game.taskManager.getTask(this);
+        if (this.userData.task != undefined) {
+            this.userData.currentState = CitizenStates.Work;
+        }
+    }
+
+    walk() { // TODO: следует также учитывать препятствия в виде зданий и объектов terrain 
+        let targetX = this.userData.task.target.position.x;
+        let targetZ = this.userData.task.target.position.z;
+
+        let citizenX = this.position.x;
+        let citizenZ = this.position.z;
+
+        // console.warn(`Target pos: ${targetX} ${targetZ} worker pos: ${citizenX} ${citizenZ}`)
+
+        if (targetZ > citizenZ) {
+            this.position.z += this.userData.walkSpeed;
+        }
+        else if (targetZ < citizenZ) {
+            this.position.z -= this.userData.walkSpeed;
+        }
+        
+        if (targetX > citizenX) {
+            this.position.x += this.userData.walkSpeed;
+        }
+        else if (targetX < citizenX){
+            this.position.x -= this.userData.walkSpeed;
+        }
+    }
+
+    work() { // TODO: перед действием узнать о доступности таски
+        if(window.game.taskManager.taskExist(this.userData.task)) {
+            if (this.hasIntersect()) {
+                console.warn('работает');
+                this.userData.task.target.work();
+            }
+            else {
+                this.walk();
+            }
+        }
+        else {
+            this.userData.currentState = CitizenStates.Idle;
+            this.userData.task = undefined;
+        }
+    }
+
+    /**
+     * Проверяет наличие пересечиния с целевым объектом
+     * @param {THREE.Mesh} obj - Целевой объект
+     * @returns {boolean}
+     */
+    hasIntersect(obj) {
+        const boxBounds = new THREE.Box3().setFromObject(this.userData.task.target);
+        const citizenBounds = new THREE.Box3().setFromObject(this);
+
+        // Проверяем пересечение между ограничивающими объемами
+        return citizenBounds.intersectsBox(boxBounds);
+    }
 }

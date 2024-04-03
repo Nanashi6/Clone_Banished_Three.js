@@ -9,10 +9,12 @@ export class City {
     get Buildings() { return this.#structures.buildings; }
     get ConstructionSites() { return this.#structures.constructionSites; }
 
+    get Structures() { return this.#structures.buildings.concat(this.#structures.constructionSites); }
+
     #citizens = [];
     get Citizens() { return this.#citizens; }
 
-    #citizensMaxCount = 0;
+    #citizensMaxCount = 1;
     get CitizensMaxCount() { return this.#citizensMaxCount; }
     set CitizensMaxCount(value) {
         if(this.#citizens.length > this.#citizensMaxCount + value) {
@@ -26,8 +28,8 @@ export class City {
     constructor() {}
 
     simulate() {
-        this.#structures.constructionSites.forEach(element => {
-            element.work();
+        this.#citizens.forEach(citizen => {
+            citizen.simulate();
         });
     }
 

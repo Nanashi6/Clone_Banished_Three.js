@@ -9,6 +9,13 @@ export class StorageManager {
     };
     get ResourcesCount() { return this.#resourcesCount; }
     
+    #reservedResource = {
+        Iron: 0,
+        Stone: 0,
+        Wood: 0,
+        Food: 0
+    };
+
     #resourcesMaxCount = {
         Iron: 0,
         Stone: 0,
@@ -18,6 +25,35 @@ export class StorageManager {
     get ResourcesMaxCount() {return this.#resourcesMaxCount; }
 
     constructor() {}
+
+    resourceIsMax(resourceType) {
+        switch(resourceType) {
+            case ResourceTypes.Iron:
+                if(this.#resourcesMaxCount.Iron == this.#resourcesCount.Iron + this.#reservedResource.Iron) {
+                    return true;
+                }
+                break;
+            case ResourceTypes.Stone:
+                if(this.#resourcesMaxCount.Stone == this.#resourcesCount.Stone + this.#reservedResource.Stone) {
+                    return true;
+                }
+                break;
+            case ResourceTypes.Wood:
+                if(this.#resourcesMaxCount.Wood == this.#resourcesCount.Wood + this.#reservedResource.Wood) {
+                    return true;
+                }
+                break;
+            case ResourceTypes.Food:
+                if(this.#resourcesMaxCount.Food == this.#resourcesCount.Food + this.#reservedResource.Food) {
+                    return true;
+                }
+                break;
+            default:
+                console.error("Указан неизвестный ресурс");
+                return true;
+        }
+        return false;
+    }
 
     /**
      * Изменяет максимальное кол-во ресурса

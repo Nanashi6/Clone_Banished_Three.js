@@ -74,9 +74,9 @@ export class BuildingRaycaster {
 
                 this.highlighter.position.set(highlightPos.x, this.plane.position.y + 0.001, highlightPos.z);
         
-                const objectExist = window.game.city.Buildings.find(obj => this.hasIntersect(obj));
+                const objectExist = window.game.city.Structures.find(obj => this.hasIntersect(obj));
                 
-                if (!objectExist /*&& this.selectedBuilding.checkRequirement()*/)
+                if (!objectExist && this.selectedBuilding.checkRequirement())
                     this.highlighter.material.color.setHex(0xFFFFFF);
                 else
                     this.highlighter.material.color.setHex(0xFF0000);
@@ -100,9 +100,9 @@ export class BuildingRaycaster {
      * Метод строительства здания
      */
     #build() {
-        const objectExist = window.game.city.Buildings.find(obj => this.hasIntersect(obj));
+        const objectExist = window.game.city.Structures.find(obj => this.hasIntersect(obj));
 
-        if (!objectExist /*&& this.selectedBuilding.checkRequirement()*/) {
+        if (!objectExist && this.selectedBuilding.checkRequirement()) {
             if (this.intersects.length > 0) {
                 const buildingClone = this.selectedBuilding.clone();
 

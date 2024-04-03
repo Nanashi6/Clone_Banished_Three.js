@@ -1,17 +1,22 @@
 import * as THREE from 'three';
+import { TaskTypes } from '../../TaskManager.js';
 
 export class ConstructionSite extends THREE.Mesh {
     constructor(building, workScore) {
         super(new THREE.BoxGeometry(building.geometry.parameters.width, 0.1, building.geometry.parameters.depth), new THREE.MeshBasicMaterial({color: 0x132530}));
         this.userData.building = building;
-        this.userData.building.position.set(this.position.x, window.game.plane.position.y + this.userData.building.geometry.parameters.height / 2, this.position.z);
         this.userData.workScore = workScore;
+    }
+
+    checkRequirement() {
+        return this.userData.building.checkRequirement();
     }
 
     build() {
         let check = this.userData.building.startBuild();
         if(check) {
             window.game.city.addConstructionSite(this);
+            window.game.taskManager.createTask(this, TaskTypes.Work);
         }
         return check;
     }
@@ -19,13 +24,16 @@ export class ConstructionSite extends THREE.Mesh {
     work() {
         if(--this.userData.workScore == 0) {
             // TODO: Исправить позиционирование здания после постройки
+            this.userData.building.position.set(this.position.x, window.game.plane.position.y + this.userData.building.geometry.parameters.height / 2, this.position.z);
             window.game.city.addBuilding(this.userData.building);
             window.game.city.removeConstructionSite(this);
+            window.game.taskManager.deleteTask(this, TaskTypes.Work);
         }
     }
 
     destroy() {
         window.game.city.removeConstructionSite(this);
+        window.game.taskManager.deleteTask(this, TaskTypes.Work);
         this.userData.building.returnResources();
     }
 

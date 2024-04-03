@@ -1,82 +1,67 @@
-import { CitizenTypes } from "./Objects/Citizens/CitizenTypes";
-
 export class TaskManager {
-    tasks = {
-        Worker: [],
-        Builder: []
-    };
+    tasks = [];
 
     constructor() {}
 
     /**
      * Возвращает задание для жителя
-     * @param {CitizenTypes} citizenRole - Роль жителя
      * @returns {Task} - Итоговое задание (Может вернуть undefined)
      */
-    getTask(citizenRole) {
+    getTask() {
         let task = undefined;
-        switch(citizenRole) {
-            case CitizenTypes.Worker:
-                task = this.getCollectTask();
-                break;
-            case CitizenTypes.Builder:
-                for (let i = 0; i < this.tasks.Builder.length; i++) {
-                    if (this.tasks.Builder[i].isFree) {
-                        task = this.tasks.Builder[i];
-                        this.tasks.Builder[i].accept();
-                    }
-                }
-                break;
-            default:
-                console.error(`Роль ${citizenRole} не определена`);
+        let i = 0;
+        while(task == undefined && i < this.tasks.length) {
+            task = this.tasks[i];
+            if (task.type == TaskTypes.Collect && window.game.storageManager.resourceIsMax(task.target.userData.type)) {
+                task = undefined;
+                i++;
+            }
+            break;
         }
         return task;
     }
 
-    getCollectTask() {
-        // TODO: Найти таски на добычу и выдать свободный -> доставка добытого ресурса на склад
-        // TODO: После добычи сразу идёт доставка на склад, подумать как это сделать
-        let task = undefined;
-        
+    taskExist(task) {
+        let index = this.tasks.findIndex(obj => obj.target === task.target); // Находим индекс объекта
+        if (task.type == TaskTypes.Collect && window.game.storageManager.resourceIsMax(task.target.userData.type) && index !== -1) {
+            return false;
+        }
+        else if (index !== -1) {
+            return true;
+        }
 
-
-        return task;
+        return false;
     }
 
-    getDeliveryTask() {
+    createTask(target, type) {
+        this.tasks.push(new Task(target, type));
+    }
 
+    deleteTask(target, type) {
+        let index = this.tasks.findIndex(obj => obj.target === target); // Находим индекс объекта
+        console.warn(index);
+        if (index !== -1) {
+            this.tasks.splice(index, 1); // Удаляем объект и получаем его
+        }
     }
 }
 
-export const WorkerTaskTypes = {
+export const TaskTypes = {
     Collect: 'Collect',
-    Delivery: 'Delivery'
+    Work: 'Work'
 }
 
 export class Task {
+    type;
     target;
     isFree;
 
-    constructor(target) {
+    constructor(target, type) {
         this.target = target;
         this.isFree = true;
     }
 
-    accept(citizen) {
+    accept() {
         this.isFree = false;
     }
-}
-
-export class DeliveryTask extends Task {
-    item;
-    storage;
-
-    // TODO: Storage по-хорошему нужно динамически прикидывать т.к. возможен случай что его удалят до доставки ресурса и житель ёбнется
-    constructor(item, storage) {
-        super(item);
-        this.storage = storage;
-    }
-
-    // TODO: метод для смены target на storage
-
 }
