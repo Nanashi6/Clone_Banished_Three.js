@@ -10,15 +10,21 @@ export class SelectorRaycaster {
     raycaster;
     intersects;
 
+    // highlighter = new THREE.Mesh(new THREE.PlaneGeometry(0, 0), new THREE.MeshBasicMaterial({color: 0x00ffff}));
+
     selectorType;
     selectedObjects;
 
     camera;
     plane;
 
+    leftButtonPressed = false;
+
     constructor(camera, plane) {
         this.camera = camera;
         this.plane = plane;
+
+        // this.highlighter.position.y = -1 + 0.01;
 
         this.raycaster = new THREE.Raycaster();
 
@@ -28,7 +34,7 @@ export class SelectorRaycaster {
 
         document.addEventListener('mousedown', this.onMouseDown.bind(this), false);
         document.addEventListener('mouseup', this.onMouseUp.bind(this), false);
-        document.addEventListener('mousemove', (e) => this.onMouseMove.bind(this), false);
+        document.addEventListener('mousemove', this.onMouseMove.bind(this), false);
     }
 
     /**
@@ -36,6 +42,7 @@ export class SelectorRaycaster {
      */
     onMouseDown(event) {
         if (event.button === 0) {
+            this.leftButtonPressed = true;
             // Стартовая позиция курсора
             this.mousePosition.start.x = (event.clientX / window.innerWidth) * 2 - 1;
             this.mousePosition.start.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -43,6 +50,7 @@ export class SelectorRaycaster {
             if (this.selectorType == SelectorTypes.Default) {
                 this.#oneObjectSelect();
             }
+            // window.game.scene.add(this.highlighter);
         }
         else if(event.button === 2) {
             this.#selectorToDefault();
@@ -50,10 +58,32 @@ export class SelectorRaycaster {
     }
 
     // TODO: Динамическое подсвечивание выделенных ресурсов
-    onMouseMove(event) {}
+    onMouseMove(event) {
+        // if (this.selectorType != SelectorTypes.Default && this.leftButtonPressed) {
+        //     this.mousePosition.end.x = (event.clientX / window.innerWidth) * 2 - 1;
+        //     this.mousePosition.end.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        //     let positions = this.getSelectorSquare();
+        //     if(positions != undefined) {
+        //         const startPos = positions[0];
+        //         const endPos = positions[1];
+        
+        //         let width = endPos.x - startPos.x;
+        //         let depth = endPos.z - startPos.z;
+
+        //         this.highlighter.geometry.parameters.width = width;
+        //         this.highlighter.geometry.parameters.depth = depth;
+
+        //         this.highlighter.position.x = (endPos.x - startPos.x) / 2
+        //         this.highlighter.position.z = (endPos.z - startPos.z) / 2
+        //     }
+        // }
+    }
 
     onMouseUp(event) {
         if (event.button == 0) {
+            this.leftButtonPressed = false;
+
             this.mousePosition.end.x = (event.clientX / window.innerWidth) * 2 - 1;
             this.mousePosition.end.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -75,9 +105,13 @@ export class SelectorRaycaster {
                 case SelectorTypes.CancelCollect:
                     this.#cancelCollect();
                     break;
+                case SelectorTypes.DestroySelector:
+                    this.#destroyStructures();
+                    break;
                 default:
                     break;
             }
+            // window.game.scene.remove(this.highlighter);
         }
     }
 
@@ -94,58 +128,85 @@ export class SelectorRaycaster {
 
     #woodSelect() {
         let positions = this.getSelectorSquare();
-        const startPos = positions[0];
-        const endPos = positions[1];
+        if(positions != undefined) {
+            const startPos = positions[0];
+            const endPos = positions[1];
 
-        let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Wood && !resource.userData.collect &&
-                                            (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
-                                            (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
-            
-        filteredObjects.forEach(obj => {
-            obj.collect();
-        });
+            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Wood && !resource.userData.collect &&
+                                                (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
+                                                (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
+                
+            filteredObjects.forEach(obj => {
+                obj.collect();
+            });
+        }
     }
 
     #ironSelect() {
         let positions = this.getSelectorSquare();
-        const startPos = positions[0];
-        const endPos = positions[1];
+        if(positions != undefined) {
+            const startPos = positions[0];
+            const endPos = positions[1];
 
-        let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Iron && !resource.userData.collect &&
-                                            (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
-                                            (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
-            
-        filteredObjects.forEach(obj => {
-            obj.collect();
-        });
+            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Iron && !resource.userData.collect &&
+                                                (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
+                                                (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
+                
+            filteredObjects.forEach(obj => {
+                obj.collect();
+            });
+        }
     }
 
     #stoneSelect() {
         let positions = this.getSelectorSquare();
-        const startPos = positions[0];
-        const endPos = positions[1];
+        if(positions != undefined) {
+            const startPos = positions[0];
+            const endPos = positions[1];
 
-        let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Stone && !resource.userData.collect &&
-                                            (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
-                                            (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
-            
-        filteredObjects.forEach(obj => {
-            obj.collect();
-        });
+            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Stone && !resource.userData.collect &&
+                                                (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
+                                                (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
+                
+            filteredObjects.forEach(obj => {
+                obj.collect();
+            });
+        }
     }
 
     #cancelCollect() {
         let positions = this.getSelectorSquare();
-        const startPos = positions[0];
-        const endPos = positions[1];
+        if(positions != undefined) {
+            const startPos = positions[0];
+            const endPos = positions[1];
+    
+            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.collect &&
+                                                (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
+                                                (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
+                
+            filteredObjects.forEach(obj => {
+                obj.collect();
+            });
+        }
+    }
 
-        let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.collect &&
-                                            (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
-                                            (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
-            
-        filteredObjects.forEach(obj => {
-            obj.collect();
-        });
+    #destroyStructures() {
+        let positions = this.getSelectorSquare();
+        if(positions != undefined) {
+            const startPos = positions[0];
+            const endPos = positions[1];
+    
+            let filteredObjects = window.game.city.Structures.filter(structure => (structure.position.x >= startPos.x && structure.position.x <= endPos.x) &&
+                                                (structure.position.z >= startPos.z && structure.position.z <= endPos.z));
+
+            filteredObjects.forEach(obj => {
+                obj.destroy();
+            });
+        }
+    }
+
+    changeSelector(selectorType) {
+        this.selectorType = selectorType;
     }
 
     /**
@@ -175,20 +236,23 @@ export class SelectorRaycaster {
             const intersect = this.intersects[0];
             endPos = new THREE.Vector3().copy(intersect.point);//.addScalar(0.5);
         }
+        if(startPos != undefined && endPos != undefined) {
+            if(startPos.x > endPos.x) {
+                let temp = startPos.x;
+                startPos.x = endPos.x;
+                endPos.x = temp;
+            }
+    
+            if(startPos.z > endPos.z) {
+                let temp = startPos.z;
+                startPos.z = endPos.z;
+                endPos.z = temp;
+            }
 
-        if(startPos.x > endPos.x) {
-            let temp = startPos.x;
-            startPos.x = endPos.x;
-            endPos.x = temp;
+            return [startPos, endPos];
         }
 
-        if(startPos.z > endPos.z) {
-            let temp = startPos.z;
-            startPos.z = endPos.z;
-            endPos.z = temp;
-        }
-
-        return [startPos, endPos];
+        return undefined;
     }
 
     /**
@@ -212,5 +276,6 @@ export const SelectorTypes = {
     StoneSelector: 'StoneSelector',
     IronSelector: 'IronSelector',
     AllResourceSelector: 'AllResourceSelector',
-    CancelCollect: 'CancelCollect'
+    CancelCollect: 'CancelCollect',
+    DestroySelector: 'DestroySelector'
 }

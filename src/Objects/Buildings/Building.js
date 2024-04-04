@@ -58,8 +58,8 @@ export class Building extends THREE.Mesh {
 
     returnResources() {
         let resources = {};
-        for (let key in requirementResource) {
-            resources[key] = requirementResource[key] * this.#returnRate;
+        for (let key in this.requirementResource) {
+            resources[key] = this.requirementResource[key] * this.#returnRate;
         }
         window.game.storageManager.addResources(resources);
     }

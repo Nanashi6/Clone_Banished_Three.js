@@ -51,6 +51,11 @@
         <div id="render-target">
             <div class="ui">
                 <div class="building-selector">
+                    <button data-type="CancelCollect" onclick="ui.onSelectorChanged(event)">CANCEL</button>
+                    <button data-type="StoneSelector" onclick="ui.onSelectorChanged(event)">STONE</button>
+                    <button data-type="IronSelector" onclick="ui.onSelectorChanged(event)">IRON</button>
+                    <button data-type="WoodSelector" onclick="ui.onSelectorChanged(event)">WOOD</button>
+                    <button data-type="AllResourceSelector" onclick="ui.onSelectorChanged(event)">ALL RESORCES</button>
                     <button data-type="Home" onclick="ui.onToolSelected(event)">Home</button>
                     <!-- <button data-type="HuntingCabin" onclick="ui.onToolSelected(event)">Hunting Cabin</button>
                     <button data-type="ForesterLodge" onclick="ui.onToolSelected(event)">Forester Lodge</button>
@@ -61,6 +66,7 @@
                     <button data-type="Mine" onclick="ui.onToolSelected(event)">Mine</button>
                     <button data-type="Quarry" onclick="ui.onToolSelected(event)">Quarry</button>
                     <button data-type="WoodCutter" onclick="ui.onToolSelected(event)">Wood Cutter</button> -->
+                    <button data-type="DestroySelector" onclick="ui.onSelectorChanged(event)">Destroy</button>
                 </div>
                 <div id="resourcesInfo"></div>
         </div>

@@ -1,13 +1,16 @@
 export class GameUI {
+    isObjectPanel = false;
+
     onToolSelected(event) {    
         this.activeToolId = event.target.getAttribute('data-type');
 
-        if(this.activeToolId == "ResourceSelector") {
-            window.game.selectRaycaster.changeSelectTool(this.activeToolId);
-        }
-        else {
-            window.game.buildingRaycaster.updateBuildHighlighter(this.activeToolId);            
-        }
+        window.game.buildingRaycaster.updateBuildHighlighter(this.activeToolId);
+    }
+
+    onSelectorChanged(event) {
+        this.activeSelectorId = event.target.getAttribute('data-type');
+
+        window.game.selectorRaycaster.changeSelector(this.activeSelectorId);
     }
 
     updateResourceInfoPanel(resourcesCount) {
