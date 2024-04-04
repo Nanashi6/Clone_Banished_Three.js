@@ -52,22 +52,22 @@ export class Citizen extends THREE.Mesh {
 
         // console.warn(`Target pos: ${targetX} ${targetZ} worker pos: ${citizenX} ${citizenZ}`)
 
-        if (targetZ > citizenZ) {
+        if (targetZ - citizenZ > 0.1) {
             this.position.z += this.userData.walkSpeed;
         }
-        else if (targetZ < citizenZ) {
+        else if (0.1 < citizenZ - targetZ) {
             this.position.z -= this.userData.walkSpeed;
         }
         
-        if (targetX > citizenX) {
+        if (targetX - citizenX > 0.1) {
             this.position.x += this.userData.walkSpeed;
         }
-        else if (targetX < citizenX){
+        else if (0.1 < citizenX - targetX){
             this.position.x -= this.userData.walkSpeed;
         }
     }
 
-    work() { // TODO: перед действием узнать о доступности таски
+    work() {
         if(window.game.taskManager.taskExist(this.userData.task)) {
             if (this.hasIntersect()) {
                 console.warn('работает');

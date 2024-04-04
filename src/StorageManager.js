@@ -19,7 +19,7 @@ export class StorageManager {
     #resourcesMaxCount = {
         Iron: 0,
         Stone: 0,
-        Wood: 0,
+        Wood: 10,
         Food: 0
     };
     get ResourcesMaxCount() {return this.#resourcesMaxCount; }

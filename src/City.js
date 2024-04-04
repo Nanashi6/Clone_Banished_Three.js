@@ -14,7 +14,7 @@ export class City {
     #citizens = [];
     get Citizens() { return this.#citizens; }
 
-    #citizensMaxCount = 1;
+    #citizensMaxCount = 3;
     get CitizensMaxCount() { return this.#citizensMaxCount; }
     set CitizensMaxCount(value) {
         if(this.#citizens.length > this.#citizensMaxCount + value) {

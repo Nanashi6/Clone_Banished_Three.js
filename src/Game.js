@@ -6,6 +6,7 @@ import { StorageManager } from './StorageManager.js';
 import { TaskManager } from './TaskManager.js';
 import { Citizen } from './Objects/Citizens/Citizen.js';
 import { CreateTerrainResource } from './Objects/Resources/TerrainResources/TerrainResourcesFactory.js';
+import { SelectorRaycaster } from './SelectorRaycaster.js';
 
 export class Game {
     gameWindow;
@@ -19,12 +20,14 @@ export class Game {
     gridSize;
   
     plane;
+    terrainResources = [];
 
     city;
     storageManager;
     taskManager;
 
     buildingRaycaster;
+    selectorRaycaster;
   
     grid;
   
@@ -66,6 +69,7 @@ export class Game {
       this.taskManager = new TaskManager();
 
       this.buildingRaycaster = new BuildingRaycaster(this.cameraManager.camera, this.plane, this.scene);
+      this.selectorRaycaster = new SelectorRaycaster(this.cameraManager.camera, this.plane);
 
       this.renderer.setAnimationLoop(this.animate);
     }
@@ -91,12 +95,33 @@ window.onload = () => {
     window.game.city.addCitizen(citizen);
     window.game.scene.add(citizen);
 
-    let wood = CreateTerrainResource('Wood', 0, 5);
-    wood.collect();
+    citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+    citizen.position.y = -0.5;
+    citizen.position.x = 1;
+    window.game.city.addCitizen(citizen);
+    window.game.scene.add(citizen);
+
+    citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+    citizen.position.y = -0.5;
+    citizen.position.x = -1;
+    window.game.city.addCitizen(citizen);
+    window.game.scene.add(citizen);
+
+    let wood = CreateTerrainResource('Wood', 0, -5);
+    window.game.terrainResources.push(wood);
     window.game.scene.add(wood);
 }
 
-// TODO: Снос здания также через объект-обёртку над зданием (work - уничтожает здание по итогу)
-// TODO: добыча ресурсов
-// TODO: ВЫделитель для добычи ресурсов
-// TODO: taskExist должен содержать специальный блок для сбора ресурсов
+// TODO: Простой снос зданий
+
+// TODO: 4 вида рабочих зданий ( + 1 должен производить пятый ресурс)
+
+// TODO: реализовать состояния жителей (влияет на скорость работы и хотьбы)
+
+// TODO: Объекты окружения
+// TODO: класс Игрового поля с объектами (содержит метод генерации деревьев и т.д)
+
+
+
+// TODO: Снос здания также через объект-обёртку над зданием (work - уничтожает здание по итогу)************************
+// TODO: Сделать отрисовку селектора ресурсов

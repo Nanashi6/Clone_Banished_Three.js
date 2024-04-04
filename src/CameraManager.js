@@ -101,7 +101,7 @@ export class CameraManager {
         }
 
         // Панарамирование
-        if (this.#isLeftMouseDown) {
+        if (this.#isRightMouseDown) {
             const forward = new THREE.Vector3(0,0,1).applyAxisAngle(this.#Y_AXIS, this.#cameraAzimuth * this.#DEG2RAD);
             const left = new THREE.Vector3(1,0,0).applyAxisAngle(this.#Y_AXIS, this.#cameraAzimuth * this.#DEG2RAD);
             this.#cameraOrigin.add(forward.multiplyScalar(this.#PAN_SENSIVITY * deltaY));

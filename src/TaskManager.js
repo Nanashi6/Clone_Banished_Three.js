@@ -12,11 +12,15 @@ export class TaskManager {
         let i = 0;
         while(task == undefined && i < this.tasks.length) {
             task = this.tasks[i];
-            if (task.type == TaskTypes.Collect && window.game.storageManager.resourceIsMax(task.target.userData.type)) {
+            if ((task.type == TaskTypes.Collect && window.game.storageManager.resourceIsMax(task.target.userData.type)) || !task.isFree) {
                 task = undefined;
                 i++;
+                continue;
             }
             break;
+        }
+        if(task != undefined) {
+            task.accept();
         }
         return task;
     }
@@ -24,12 +28,14 @@ export class TaskManager {
     taskExist(task) {
         let index = this.tasks.findIndex(obj => obj.target === task.target); // Находим индекс объекта
         if (task.type == TaskTypes.Collect && window.game.storageManager.resourceIsMax(task.target.userData.type) && index !== -1) {
+            task.cancel();
             return false;
         }
         else if (index !== -1) {
             return true;
         }
 
+        task.cancel();
         return false;
     }
 
@@ -39,7 +45,6 @@ export class TaskManager {
 
     deleteTask(target, type) {
         let index = this.tasks.findIndex(obj => obj.target === target); // Находим индекс объекта
-        console.warn(index);
         if (index !== -1) {
             this.tasks.splice(index, 1); // Удаляем объект и получаем его
         }
@@ -58,10 +63,15 @@ export class Task {
 
     constructor(target, type) {
         this.target = target;
+        this.type = type;
         this.isFree = true;
     }
 
     accept() {
         this.isFree = false;
+    }
+
+    cancel() {
+        this.isFree = true;
     }
 }
