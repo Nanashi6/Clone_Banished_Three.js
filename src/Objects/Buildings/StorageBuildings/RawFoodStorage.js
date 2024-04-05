@@ -18,4 +18,14 @@ export class RawFoodStorage extends StorageBuilding{
     endBuild() {
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.RawFood, 20);
     }
+
+    destroy() {
+        if (window.game.storageManager.canUpdateResourcesMaxCount({'RawFood': -20})) {
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.RawFood, -20);
+            super.destroy();
+        }
+        else {
+            console.log('Здание не может быть снесено');
+        }
+    }
 }

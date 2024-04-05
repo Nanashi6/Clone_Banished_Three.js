@@ -18,4 +18,14 @@ export class IronStorage extends StorageBuilding{
     endBuild() {
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Iron, 20);
     }
+
+    destroy() {
+        if (window.game.storageManager.canUpdateResourcesMaxCount({'Iron': -20})) {
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Iron, -20);
+            super.destroy();
+        }
+        else {
+            console.log('Здание не может быть снесено');
+        }
+    }
 }

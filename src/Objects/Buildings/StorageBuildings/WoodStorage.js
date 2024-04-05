@@ -18,4 +18,14 @@ export class WoodStorage extends StorageBuilding{
     endBuild() {
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Wood, 20);
     }
+
+    destroy() {
+        if (window.game.storageManager.canUpdateResourcesMaxCount({'Wood': -20})) {
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Wood, -20);
+            super.destroy();
+        }
+        else {
+            console.log('Здание не может быть снесено');
+        }
+    }
 }

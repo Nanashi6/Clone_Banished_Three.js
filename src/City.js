@@ -20,7 +20,7 @@ export class City {
     updateCitizensMaxCount(value) {
         if(this.#citizens.length > this.#citizensMaxCount + value) {
             for(let i = 0; i < this.#citizens.length - (this.#citizensMaxCount + value); i++) {
-                this.#citizens.pop();
+                window.game.scene.remove(this.#citizens.pop());
             }
         }
         this.#citizensMaxCount += value;
@@ -33,9 +33,46 @@ export class City {
             building.simulate();
         });
 
+        this.#structures.constructionSites.forEach(obj => {
+            obj.simulate();
+        });
+
         this.#citizens.forEach(citizen => {
             citizen.simulate();
         });
+    }
+
+    updateGeneralState() {
+        const resources = window.game.storageManager.ResourcesCount;
+        let walkSpeed = 0;
+        let generalState = undefined;
+        if(resources.PreparedFood > this.#citizens.length * 2) {
+            walkSpeed = GeneralStates.Excellent * 0.1;
+            generalState = 'Excellent';
+        }
+        else if(resources.PreparedFood > this.#citizens.length) {
+            walkSpeed = GeneralStates.Good * 0.1;
+            generalState = 'Good';
+        }
+        else if(resources.PreparedFood == this.#citizens.length) {
+            walkSpeed = GeneralStates.Normal * 0.1;  
+            generalState = 'Normal'; 
+        }
+        else if(resources.PreparedFood < this.#citizens.length / 2) {
+            walkSpeed = GeneralStates.Awful * 0.1;
+            generalState = 'Awful';
+        }
+        else if(resources.PreparedFood < this.#citizens.length) {
+            walkSpeed = GeneralStates.Bad * 0.1;
+            generalState = 'Bad';
+        }
+
+        this.#citizens.forEach(obj => {
+            obj.WalkSpeed = walkSpeed;
+            obj.eat();
+        });
+
+        window.ui.updateGeneralState(generalState);
     }
 
     //#region Structures
@@ -81,6 +118,7 @@ export class City {
             return;
         }
         this.#citizens.push(citizen);
+        window.game.scene.add(citizen);
     }
 
     addCitizens(newCitizensCount) {
@@ -93,7 +131,8 @@ export class City {
     removeCitizen(citizen) {
         let index = this.#citizens.findIndex(obj => obj === citizen); // Находим индекс объекта
         if (index !== -1) {
-            this.#citizens.splice(index, 1); // Удаляем объект и получаем его
+            window.game.scene.remove(this.#citizens[index]);
+            this.#citizens.splice(index, 1)
         }
     }
 /*
@@ -107,4 +146,12 @@ export class City {
     }
 */
     //#endregion
+}
+
+const GeneralStates = {
+    Bad: 0.75, 
+    Normal: 1,
+    Awful: 0.5, 
+    Good: 1.25, 
+    Excellent: 1.5
 }

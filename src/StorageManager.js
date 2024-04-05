@@ -120,6 +120,48 @@ export class StorageManager {
         return true;
     }
 
+    canUpdateResourcesMaxCount(resources) {
+        let newMaxCount = 0;
+        for (let resourceType in resources) {
+            switch(resourceType) {
+                case ResourceTypes.Iron:
+                    newMaxCount = this.#resourcesMaxCount.Iron + resources['Iron'];
+                    if(this.#resourcesCount.Iron > newMaxCount) {
+                        return false;
+                    }
+                    break;
+                case ResourceTypes.Stone:
+                    newMaxCount = this.#resourcesMaxCount.Stone + resources['Stone'];
+                    if(this.#resourcesCount.Stone > newMaxCount) {
+                        return false;
+                    }
+                    break;
+                case ResourceTypes.Wood:
+                    newMaxCount = this.#resourcesMaxCount.Wood + resources['Wood'];
+                    if(this.#resourcesCount.Wood > newMaxCount) {
+                        return false;
+                    }
+                    break;
+                case ResourceTypes.RawFood:
+                    newMaxCount = this.#resourcesMaxCount.RawFood + resources['RawFood'];
+                    if(this.#resourcesCount.RawFood > newMaxCount) {
+                        return false;
+                    }
+                    break;
+                case ResourceTypes.PreparedFood:
+                    newMaxCount = this.#resourcesMaxCount.PreparedFood + resources['PreparedFood'];
+                    if(this.#resourcesCount.PreparedFood > newMaxCount) {
+                        return false;
+                    }
+                    break;
+                default:
+                    console.error("Указан неизвестный ресурс");
+                    return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Увеличивает кол-во указанного ресурса на значение value 
      * @param {ResourceTypes} resourceType 

@@ -10,7 +10,7 @@ export class SelectorRaycaster {
     raycaster;
     intersects;
 
-    // highlighter = new THREE.Mesh(new THREE.PlaneGeometry(0, 0), new THREE.MeshBasicMaterial({color: 0x00ffff}));
+    highlighter = new THREE.Mesh(new THREE.PlaneGeometry(0, 0), new THREE.MeshBasicMaterial({color: 0x00ffff}));
 
     selectorType;
     selectedObjects;
@@ -24,7 +24,8 @@ export class SelectorRaycaster {
         this.camera = camera;
         this.plane = plane;
 
-        // this.highlighter.position.y = -1 + 0.01;
+        this.highlighter.position.y = -1 + 0.01;
+        this.highlighter.rotateX(-Math.PI / 2);
 
         this.raycaster = new THREE.Raycaster();
 
@@ -50,7 +51,7 @@ export class SelectorRaycaster {
             if (this.selectorType == SelectorTypes.Default) {
                 this.#oneObjectSelect();
             }
-            // window.game.scene.add(this.highlighter);
+            window.game.scene.add(this.highlighter);
         }
         else if(event.button === 2) {
             this.#selectorToDefault();
@@ -59,25 +60,32 @@ export class SelectorRaycaster {
 
     // TODO: Динамическое подсвечивание выделенных ресурсов
     onMouseMove(event) {
-        // if (this.selectorType != SelectorTypes.Default && this.leftButtonPressed) {
-        //     this.mousePosition.end.x = (event.clientX / window.innerWidth) * 2 - 1;
-        //     this.mousePosition.end.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        if (this.selectorType != SelectorTypes.Default && this.leftButtonPressed) {
+            this.mousePosition.end.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.mousePosition.end.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        //     let positions = this.getSelectorSquare();
-        //     if(positions != undefined) {
-        //         const startPos = positions[0];
-        //         const endPos = positions[1];
+            window.game.scene.remove(this.highlighter);
+            let positions = this.getSelectorSquare();
+            if(positions != undefined) {
+                const startPos = positions[0];
+                const endPos = positions[1];
         
-        //         let width = endPos.x - startPos.x;
-        //         let depth = endPos.z - startPos.z;
+                let width = endPos.x - startPos.x;
+                let depth = endPos.z - startPos.z;
 
-        //         this.highlighter.geometry.parameters.width = width;
-        //         this.highlighter.geometry.parameters.depth = depth;
+                // Создаем новый объект PlanaGeometry с обновленными параметрами ширины и глубины
+                const newGeometry = new THREE.PlaneGeometry(width, depth);
 
-        //         this.highlighter.position.x = (endPos.x - startPos.x) / 2
-        //         this.highlighter.position.z = (endPos.z - startPos.z) / 2
-        //     }
-        // }
+                this.highlighter.geometry.dispose(); // Освобождаем ресурсы старой геометрии
+
+                // Заменяем геометрию объекта highlighter на новую геометрию
+                this.highlighter.geometry = newGeometry;
+
+                this.highlighter.position.x = (endPos.x + startPos.x) / 2
+                this.highlighter.position.z = (endPos.z + startPos.z) / 2
+            }
+            window.game.scene.add(this.highlighter);
+        }
     }
 
     onMouseUp(event) {
@@ -111,7 +119,14 @@ export class SelectorRaycaster {
                 default:
                     break;
             }
-            // window.game.scene.remove(this.highlighter);
+            window.game.scene.remove(this.highlighter);
+            // Создаем новый объект PlanaGeometry с обновленными параметрами ширины и глубины
+            const newGeometry = new THREE.PlaneGeometry(0, 0);
+
+            this.highlighter.geometry.dispose(); // Освобождаем ресурсы старой геометрии
+
+            // Заменяем геометрию объекта highlighter на новую геометрию
+            this.highlighter.geometry = newGeometry;
         }
     }
 

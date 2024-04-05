@@ -17,7 +17,8 @@ export class Building extends THREE.Mesh {
      * @param {THREE.Material} material 
      */
     constructor(geometry, material) {
-        super(geometry, material);
+        super(geometry, material);        
+        this.castShadow = true;
     }
 
     /**

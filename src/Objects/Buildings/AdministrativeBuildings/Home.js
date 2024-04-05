@@ -17,4 +17,9 @@ export class Home extends Building{
     endBuild() {
         window.game.city.updateCitizensMaxCount(5);
     }
+
+    destroy() {
+        window.game.city.updateCitizensMaxCount(-5);
+        super.destroy();
+    }
 }

@@ -108,7 +108,7 @@ export class BuildingRaycaster {
 
                 buildingClone.position.set(this.highlighter.position.x, this.plane.position.y + this.selectedBuilding.geometry.parameters.height / 2, this.highlighter.position.z);
 
-                let buildAccepted = buildingClone.build();
+                let buildAccepted = buildingClone.build(window.game.terrainResourcesManager.TerrainResources.filter(obj => this.hasIntersect(obj)));
                 /*
                 if (!buildAccepted) {
                     // this.scene.add(buildingClone);

@@ -18,4 +18,14 @@ export class StoneStorage extends StorageBuilding{
     endBuild() {
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Stone, 20);
     }
+
+    destroy() {
+        if (window.game.storageManager.canUpdateResourcesMaxCount({'Stone': -20})) {
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Stone, -20);
+            super.destroy();
+        }
+        else {
+            console.log('Здание не может быть снесено');
+        }
+    }
 }

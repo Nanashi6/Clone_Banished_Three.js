@@ -16,7 +16,6 @@ export class WorkBuilding extends Building {
     }
 
     simulate() {
-        console.log('я тута')
         if(window.game.storageManager.resourceIsMax(this.userData.resourceType) && this.userData.taskCreated) {
             window.game.taskManager.deleteTask(this, TaskTypes.Work);
             this.userData.taskCreated = false;

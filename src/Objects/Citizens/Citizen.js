@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { CitizenTypes } from './CitizenTypes.js';
 import { CitizenStates } from './CitizenStates.js';
+import { ResourceTypes } from '../Resources/ResourceTypes.js';
 
 export class Citizen extends THREE.Mesh {
+    set WalkSpeed(value) { this.userData.walkSpeed = value; }
     /**
      * @param {CitizenTypes} type - Роль жителя
      * @param {THREE.BufferGeometry} geometry 
@@ -13,6 +15,21 @@ export class Citizen extends THREE.Mesh {
         this.userData.currentState = CitizenStates.Idle;
         this.userData.task = undefined;
         this.userData.walkSpeed = 0.1;
+        this.userData.hungryDays = 0;
+        this.userData.criticalHungryDays = 3;
+        this.castShadow = true;
+    }
+
+    eat() {
+        let check = window.game.storageManager.reduceResource(ResourceTypes.PreparedFood, 1);
+        if(!check) {
+            if(++this.userData.hungryDays >= this.userData.criticalHungryDays) {
+                window.game.city.removeCitizen(this);
+            }
+        }
+        else {
+            this.userData.hungryDays = 0;
+        }
     }
 
     cancelTask() {
@@ -49,8 +66,6 @@ export class Citizen extends THREE.Mesh {
 
         let citizenX = this.position.x;
         let citizenZ = this.position.z;
-
-        // console.warn(`Target pos: ${targetX} ${targetZ} worker pos: ${citizenX} ${citizenZ}`)
 
         if (targetZ - citizenZ > 0.1) {
             this.position.z += this.userData.walkSpeed;

@@ -47,7 +47,9 @@ export class Game {
       this.cameraManager = new CameraManager(this.gameWindow);
       this.camera = this.cameraManager.camera;
   
-      this.renderer = new THREE.WebGLRenderer();
+      this.renderer = new THREE.WebGLRenderer({antialias: true});
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.shadowMap.type = THREE.PCFShadowMap;
       this.renderer.setSize(this.gameWindow.offsetWidth, this.gameWindow.offsetHeight);
       this.gameWindow.appendChild(this.renderer.domElement);
   
@@ -57,12 +59,13 @@ export class Game {
       
       this.gridSize = gridSize; // Размер карты
   
-      this.plane = new THREE.Mesh(new THREE.PlaneGeometry(this.gridSize, this.gridSize, 1), new THREE.MeshBasicMaterial({color: 0x005500}));
+      this.plane = new THREE.Mesh(new THREE.PlaneGeometry(this.gridSize, this.gridSize, 1), new THREE.MeshLambertMaterial({color: 0x005500}));
       this.plane.position.set(0, -1, 0);
       this.plane.rotateX(-Math.PI / 2);
       // Добавляем объект в сцену
       this.scene.add(this.plane);
       this.plane.visible = true;
+      this.plane.receiveShadow = true;
   
       this.grid = new THREE.GridHelper(this.gridSize, this.gridSize);
       this.grid.position.set(this.plane.position.x, this.plane.position.y + 0.01, this.plane.position.z);
@@ -80,6 +83,8 @@ export class Game {
       this.buildingRaycaster = new BuildingRaycaster(this.cameraManager.camera, this.plane, this.scene);
       this.selectorRaycaster = new SelectorRaycaster(this.cameraManager.camera, this.plane);
 
+      this.#setupLights();
+
       this.renderer.setAnimationLoop(this.animate);
     }
   
@@ -92,6 +97,8 @@ export class Game {
         this.day++; // Определяем количество пройденных дней
         this.elapsedTime -= this.dayDurationInSeconds;
 
+        this.city.updateGeneralState(); // Обновление состояния жителей
+
         console.log(`Наступил день ${this.day}`)
       }
 
@@ -100,6 +107,28 @@ export class Game {
       this.renderer.render(this.scene, this.camera);
     }
   
+    /**
+     * Setup the lights for the scene
+     */
+    #setupLights() {
+      const sun = new THREE.DirectionalLight(0xffffff, 2)
+      sun.position.set(-150, 250, 150);
+      sun.castShadow = true;
+      sun.shadow.camera.left = -150;
+      sun.shadow.camera.right = 150;
+      sun.shadow.camera.top = 120;
+      sun.shadow.camera.bottom = -150;
+      sun.shadow.mapSize.width = 2048 * 0.75;
+      sun.shadow.mapSize.height = 1024 * 0.75;
+      sun.shadow.camera.near = 100;
+      sun.shadow.camera.far = 2000; // 4000 для 200
+      sun.shadow.normalBias = 0.01;
+      this.scene.add(sun);
+      this.scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+      // const helper = new THREE.CameraHelper( sun.shadow.camera );
+      // this.scene.add( helper );
+    }
+
     resizeWindow = () => {
       this.camera.aspect = this.gameWindow.offsetWidth / this.gameWindow.offsetHeight;
       this.camera.updateProjectionMatrix();
@@ -108,48 +137,35 @@ export class Game {
 }
 
 window.onload = () => {
-    window.game = new Game(200);
+    window.game = new Game(100);
 
     let citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
     citizen.position.y = -0.5;
     window.game.city.addCitizen(citizen);
-    window.game.scene.add(citizen);
 
     citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
     citizen.position.y = -0.5;
     citizen.position.x = 1;
     window.game.city.addCitizen(citizen);
-    window.game.scene.add(citizen);
 
     citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
     citizen.position.y = -0.5;
     citizen.position.x = -1;
     window.game.city.addCitizen(citizen);
-    window.game.scene.add(citizen);
-
-    let wood = CreateTerrainResource('Wood', 0, -5);
-    window.game.terrainResourcesManager.addTerrainResource(wood);
-    window.game.scene.add(wood);
-
     
-    for(let i = 0; i < 1000; i++) {
+    for(let i = 0; i < 500; i++) {
       window.game.terrainResourcesManager.generateRandomTree();
       window.game.terrainResourcesManager.generateRandomStone();
       window.game.terrainResourcesManager.generateRandomIron();
     }
 }
 
+// TODO: требования ресурсов
+
 // TODO: класс-инициализатор
-
-// TODO: Если здание строится на ресурсах, то сначала убираются все пересекаемые ресурсы, а потом строится
-// TODO: перед генерацией дерева нужно проверять его на пересечение со зданиями
-
-// TODO: реализовать состояния жителей (влияет на скорость работы и хотьбы) (одно общее состояние для всего поселения)
 
 // TODO: Объекты окружения
 // TODO: класс Игрового поля с объектами (содержит метод генерации деревьев и т.д)
-
-// TODO: Освещение и тени.
 
 // TODO: Звуки постройки/сноса, фоновая музыка, звуки селекторов ресурсов
 
@@ -158,6 +174,6 @@ window.onload = () => {
 // TODO: Сделать UI
 
 
-
+// TODO: Жители не должны проходить сквозь здания
 // TODO: Снос здания также через объект-обёртку над зданием (work - уничтожает здание по итогу)*****
-// TODO: Сделать отрисовку селектора ресурсов***
+// TODO: Сделать отрисовку селектора ресурсов*** (Отрисовывать на сцене каждое срабатывание onMouseMove)

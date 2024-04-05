@@ -18,4 +18,14 @@ export class PreparedFoodStorage extends StorageBuilding{
     endBuild() {
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.PreparedFood, 20);
     }
+
+    destroy() {
+        if (window.game.storageManager.canUpdateResourcesMaxCount({'PreparedFood': -20})) {
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.PreparedFood, -20);
+            super.destroy();
+        }
+        else {
+            console.log('Здание не может быть снесено');
+        }
+    }
 }

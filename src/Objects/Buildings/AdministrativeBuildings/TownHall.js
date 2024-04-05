@@ -24,4 +24,19 @@ export class TownHall extends Building{
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Stone, 20);
         // TODO: Сделать добавление жителя раз в день, если есть свободное место для жителя
     }
+
+    destroy() {
+        if (window.game.storageManager.canUpdateResourcesMaxCount({Iron: -20, Stone: -20, Wood: -20, RawFood: -20, PreparedFood: -20})) {
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.PreparedFood, -20);
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.RawFood, -20);
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Iron, -20);
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Wood, -20);
+            window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Stone, -20);
+            window.game.city.updateCitizensMaxCount(-5);
+            super.destroy();
+        }
+        else {
+            console.error('Здание не может быть снесено');
+        }
+    }
 }

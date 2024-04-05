@@ -15,6 +15,7 @@ export class TerrainResource extends THREE.Mesh {
         this.userData.collect = false;
         this.userData.type = type;
         this.userData.workScore = 40;
+        this.castShadow = true;
     }
 
     /**

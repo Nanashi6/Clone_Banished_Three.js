@@ -1,5 +1,6 @@
 import { ResourceTypes } from "./Objects/Resources/ResourceTypes.js";
 import { CreateTerrainResource } from "./Objects/Resources/TerrainResources/TerrainResourcesFactory.js";
+import * as THREE from 'three';
 
 export class TerrainResourcesManager {
     #terrainResources = [];
@@ -21,23 +22,47 @@ export class TerrainResourcesManager {
     
     generateRandomTree() {
         let point = this.getRandomPointInsideSquare();
-        let tree = CreateTerrainResource(ResourceTypes.Wood, point.x, point.y);
-        window.game.scene.add(tree);
-        this.addTerrainResource(tree);
+        while(true) {
+            let tree = CreateTerrainResource(ResourceTypes.Wood, point.x, point.y);
+            if(!this.hasIntersectWithStructures(tree)) {
+                window.game.scene.add(tree);
+                this.addTerrainResource(tree);
+                break;
+            }
+            else {
+                point = this.getRandomPointInsideSquare();
+            }
+        }
     }
 
     generateRandomStone() {
         let point = this.getRandomPointInsideSquare();
-        let stone = CreateTerrainResource(ResourceTypes.Stone, point.x, point.y);
-        window.game.scene.add(stone);
-        this.addTerrainResource(stone);
+        while(true) {
+            let stone = CreateTerrainResource(ResourceTypes.Stone, point.x, point.y);
+            if(!this.hasIntersectWithStructures(stone)) {
+                window.game.scene.add(stone);
+                this.addTerrainResource(stone);
+                break;
+            }
+            else {
+                point = this.getRandomPointInsideSquare();
+            }
+        }
     }
 
     generateRandomIron() {
         let point = this.getRandomPointInsideSquare();
-        let iron = CreateTerrainResource(ResourceTypes.Iron, point.x, point.y);
-        window.game.scene.add(iron);
-        this.addTerrainResource(iron);
+        while(true) {
+            let iron = CreateTerrainResource(ResourceTypes.Iron, point.x, point.y);
+            if(!this.hasIntersectWithStructures(iron)) {
+                window.game.scene.add(iron);
+                this.addTerrainResource(iron);
+                break;
+            }
+            else {
+                point = this.getRandomPointInsideSquare();
+            }
+        }
     }
 
     resourceExist(resource) {
@@ -74,7 +99,7 @@ export class TerrainResourcesManager {
     /** 
      * Функция для получения случайной точки внутри квадрата
      */ 
-    getRandomPointInsideSquare(topLeftX = -100, topLeftY = -100, sideLength = 200) {
+    getRandomPointInsideSquare(topLeftX = -50, topLeftY = -50, sideLength = 100) {
         const randomX = Math.random() * sideLength;
         const randomY = Math.random() * sideLength;
 
@@ -82,5 +107,18 @@ export class TerrainResourcesManager {
         const y = topLeftY + randomY;
 
         return { x, y };
+    }
+
+    hasIntersectWithStructures(obj) {
+        // Ограничивающие объемы для BoxGeometry и PlaneGeometry
+        const boxBounds = new THREE.Box3().setFromObject(obj);
+        window.game.city.Structures.forEach(object => {
+            const planeBounds = new THREE.Box3().setFromObject(object);
+            let check = planeBounds.intersectsBox(boxBounds);
+            if(check) return true;
+        });
+
+        // Проверяем пересечение между ограничивающими объемами
+        return false;
     }
 }
