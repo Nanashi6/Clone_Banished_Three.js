@@ -25,6 +25,7 @@ export class ConstructionSite extends THREE.Mesh {
         if(--this.userData.workScore == 0) {
             // TODO: Исправить позиционирование здания после постройки
             this.userData.building.position.set(this.position.x, window.game.plane.position.y + this.userData.building.geometry.parameters.height / 2, this.position.z);
+            this.userData.building.endBuild();
             window.game.city.addBuilding(this.userData.building);
             window.game.city.removeConstructionSite(this);
             window.game.taskManager.deleteTask(this, TaskTypes.Work);

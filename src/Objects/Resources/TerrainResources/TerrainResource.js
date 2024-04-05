@@ -14,7 +14,7 @@ export class TerrainResource extends THREE.Mesh {
         super(geometry, material);
         this.userData.collect = false;
         this.userData.type = type;
-        this.userData.workScore = 2;
+        this.userData.workScore = 40;
     }
 
     /**
@@ -35,14 +35,13 @@ export class TerrainResource extends THREE.Mesh {
      * @returns {boolean} - Сообщение о добыче ресурса
      */
     work() {
-        // TODO: Есть шанс, что ресурс перестанет быть отмечен как доступный для сбора и житель просто будет стоять рядом 
-        // (Придумать как отменить задание при отмене сбора)
         if(this.userData.collect && --this.userData.workScore == 0) { 
             console.log(`Добыт ресурс ${this.userData.type}`);
 
             // Добавление добытого ресурса на склад
             window.game.storageManager.addResource(this.userData.type, 1);
 
+            window.game.terrainResourcesManager.removeResource(this);
             window.game.scene.remove(this);
             window.game.taskManager.deleteTask(this, TaskTypes.Collect);
             return true;

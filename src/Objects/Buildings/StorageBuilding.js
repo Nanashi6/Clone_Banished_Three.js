@@ -1,5 +1,5 @@
 import { Building } from "./Building.js";
-import { ResourceType } from 'resourceType';
+import { ResourceTypes } from 'resourceTypes';
 
 export class StorageBuilding extends Building {
     constructor(resourceType, geometry, material) {
@@ -19,7 +19,7 @@ export class StorageBuilding extends Building {
 
     /**
      * Берёт ресурс со склада
-     * @param {ResourceType} resourceType - Тип ресурса
+     * @param {ResourceTypes} resourceType - Тип ресурса
      * @param {number} value - Кол-во ресурса
      * @returns {boolean} - Сообщение о успешности
      */

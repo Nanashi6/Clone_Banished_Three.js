@@ -1,3 +1,4 @@
+import { WorkBuilding } from './Objects/Buildings/WorkBuilding.js';
 import { Citizen } from './Objects/Citizens/Citizen.js';
 import * as THREE from 'three';
 
@@ -16,7 +17,7 @@ export class City {
 
     #citizensMaxCount = 3;
     get CitizensMaxCount() { return this.#citizensMaxCount; }
-    set CitizensMaxCount(value) {
+    updateCitizensMaxCount(value) {
         if(this.#citizens.length > this.#citizensMaxCount + value) {
             for(let i = 0; i < this.#citizens.length - (this.#citizensMaxCount + value); i++) {
                 this.#citizens.pop();
@@ -28,6 +29,10 @@ export class City {
     constructor() {}
 
     simulate() {
+        this.#structures.buildings.filter(building => building instanceof WorkBuilding).forEach(building => {
+            building.simulate();
+        });
+
         this.#citizens.forEach(citizen => {
             citizen.simulate();
         });

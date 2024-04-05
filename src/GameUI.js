@@ -14,7 +14,7 @@ export class GameUI {
     }
 
     updateResourceInfoPanel(resourcesCount) {
-        document.getElementById('resourcesInfo').innerHTML = `Iron: ${resourcesCount.Iron} Stone: ${resourcesCount.Stone} Wood: ${resourcesCount.Wood} Food: ${resourcesCount.Food}`;
+        document.getElementById('resourcesInfo').innerHTML = `Iron: ${resourcesCount.Iron} Stone: ${resourcesCount.Stone} Wood: ${resourcesCount.Wood} RawFood: ${resourcesCount.RawFood} PFood: ${resourcesCount.PreparedFood}`;
     }
 }
 

@@ -5,22 +5,31 @@ export class StorageManager {
         Iron: 0,
         Stone: 0,
         Wood: 0,
-        Food: 0
+        RawFood: 0,
+        PreparedFood: 0
     };
     get ResourcesCount() { return this.#resourcesCount; }
     
+    get Iron() { return this.#resourcesCount.Iron; }
+    get Stone() { return this.#resourcesCount.Stone; }
+    get Wood() { return this.#resourcesCount.Wood; }
+    get RawFood() { return this.#resourcesCount.RawFood; }
+    get PreparedFood() { return this.#resourcesCount.PreparedFood; }
+
     #reservedResource = {
         Iron: 0,
         Stone: 0,
         Wood: 0,
-        Food: 0
+        RawFood: 0,
+        PreparedFood: 0
     };
 
     #resourcesMaxCount = {
         Iron: 0,
         Stone: 0,
-        Wood: 10,
-        Food: 0
+        Wood: 0,
+        RawFood: 0,
+        PreparedFood: 0
     };
     get ResourcesMaxCount() {return this.#resourcesMaxCount; }
 
@@ -43,8 +52,13 @@ export class StorageManager {
                     return true;
                 }
                 break;
-            case ResourceTypes.Food:
-                if(this.#resourcesMaxCount.Food == this.#resourcesCount.Food + this.#reservedResource.Food) {
+            case ResourceTypes.RawFood:
+                if(this.#resourcesMaxCount.RawFood == this.#resourcesCount.RawFood + this.#reservedResource.RawFood) {
+                    return true;
+                }
+                break;
+            case ResourceTypes.PreparedFood:
+                if(this.#resourcesMaxCount.PreparedFood == this.#resourcesCount.PreparedFood + this.#reservedResource.PreparedFood) {
                     return true;
                 }
                 break;
@@ -85,12 +99,19 @@ export class StorageManager {
                 }
                 this.#resourcesMaxCount.Wood = newMaxCount;
                 break;
-            case ResourceTypes.Food:
-                newMaxCount = this.#resourcesMaxCount.Food + value;
-                if(newMaxCount < this.#resourcesMaxCount.Food && this.#resourcesCount.Food > newMaxCount) {
+            case ResourceTypes.RawFood:
+                newMaxCount = this.#resourcesMaxCount.RawFood + value;
+                if(newMaxCount < this.#resourcesMaxCount.RawFood && this.#resourcesCount.RawFood > newMaxCount) {
                     return false;
                 }
-                this.#resourcesMaxCount.Food = newMaxCount;
+                this.#resourcesMaxCount.RawFood = newMaxCount;
+                break;
+            case ResourceTypes.PreparedFood:
+                newMaxCount = this.#resourcesMaxCount.PreparedFood + value;
+                if(newMaxCount < this.#resourcesMaxCount.PreparedFood && this.#resourcesCount.PreparedFood > newMaxCount) {
+                    return false;
+                }
+                this.#resourcesMaxCount.PreparedFood = newMaxCount;
                 break;
             default:
                 console.error("Указан неизвестный ресурс");
@@ -138,14 +159,24 @@ export class StorageManager {
                     this.#resourcesCount.Wood += value;
                 }
                 break;
-            case ResourceTypes.Food:
-                if(this.#resourcesCount.Food + value > this.#resourcesMaxCount.Food) {
-                    resid += value - (this.#resourcesMaxCount.Food - this.#resourcesCount.Food)
-                    this.#resourcesCount.Food += this.#resourcesMaxCount.Food - this.#resourcesCount.Food;
+            case ResourceTypes.RawFood:
+                if(this.#resourcesCount.RawFood + value > this.#resourcesMaxCount.RawFood) {
+                    resid += value - (this.#resourcesMaxCount.RawFood - this.#resourcesCount.RawFood)
+                    this.#resourcesCount.RawFood += this.#resourcesMaxCount.RawFood - this.#resourcesCount.RawFood;
                 }
                 else {
                     resid = 0;
-                    this.#resourcesCount.Food += value;
+                    this.#resourcesCount.RawFood += value;
+                }
+                break;
+            case ResourceTypes.PreparedFood:
+                if(this.#resourcesCount.PreparedFood + value > this.#resourcesMaxCount.PreparedFood) {
+                    resid += value - (this.#resourcesMaxCount.PreparedFood - this.#resourcesCount.PreparedFood)
+                    this.#resourcesCount.PreparedFood += this.#resourcesMaxCount.PreparedFood - this.#resourcesCount.PreparedFood;
+                }
+                else {
+                    resid = 0;
+                    this.#resourcesCount.PreparedFood += value;
                 }
                 break;
             default:
@@ -159,7 +190,8 @@ export class StorageManager {
         this.addResource(ResourceTypes.Iron, resources.Iron);
         this.addResource(ResourceTypes.Wood, resources.Wood);
         this.addResource(ResourceTypes.Stone, resources.Stone);
-        this.addResource(ResourceTypes.Food, resources.Food);
+        this.addResource(ResourceTypes.RawFood, resources.RawFood);
+        this.addResource(ResourceTypes.PreparedFood, resources.PreparedFood);
     }
 
     /**
@@ -188,11 +220,17 @@ export class StorageManager {
                 }
                 this.#resourcesCount.Wood -= value;
                 break;
-            case ResourceTypes.Food:
-                if(this.#resourcesCount.Food - value < 0) {
+            case ResourceTypes.RawFood:
+                if(this.#resourcesCount.RawFood - value < 0) {
                     return false;
                 }
-                this.#resourcesCount.Food -= value;
+                this.#resourcesCount.RawFood -= value;
+                break;
+            case ResourceTypes.PreparedFood:
+                if(this.#resourcesCount.PreparedFood - value < 0) {
+                    return false;
+                }
+                this.#resourcesCount.PreparedFood -= value;
                 break;
             default:
                 console.error("Указан неизвестный ресурс");
@@ -208,7 +246,9 @@ export class StorageManager {
         if(!check) return false;
         check = window.game.storageManager.reduceResource(ResourceTypes.Stone, resources.Stone);
         if(!check) return false;
-        check = window.game.storageManager.reduceResource(ResourceTypes.Food, resources.Food);
+        check = window.game.storageManager.reduceResource(ResourceTypes.RawFood, resources.RawFood);
+        if(!check) return false;
+        check = window.game.storageManager.reduceResource(ResourceTypes.PreparedFood, resources.PreparedFood);
         if(!check) return false;
         return true;
     }

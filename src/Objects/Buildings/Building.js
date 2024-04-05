@@ -6,7 +6,8 @@ export class Building extends THREE.Mesh {
         Iron: 0,
         Stone: 0,
         Wood: 0,
-        Food: 0
+        RawFood: 0,
+        PreparedFood: 0
     };
 
     #returnRate = 0.4;
@@ -25,10 +26,11 @@ export class Building extends THREE.Mesh {
      */
     checkRequirement() {
         // TODO: Сделать отдельный класс с методом сравнения ресурсов, чтобы не сравнивать каждый ресурс поотдельности
-        if(window.game.storageManager.Iron <= this.requirementResource.Iron &&
-            window.game.storageManager.Stone <= this.requirementResource.Stone &&
-            window.game.storageManager.Wood <= this.requirementResource.Wood &&
-            window.game.storageManager.Food <= this.requirementResource.Food) {
+        if(window.game.storageManager.Iron < this.requirementResource.Iron &&
+            window.game.storageManager.Stone < this.requirementResource.Stone &&
+            window.game.storageManager.Wood < this.requirementResource.Wood &&
+            window.game.storageManager.RawFood < this.requirementResource.RawFood &&
+            window.game.storageManager.PreparedFood < this.requirementResource.PreparedFood) {
                 return false;
             }
         return true;    
@@ -64,4 +66,3 @@ export class Building extends THREE.Mesh {
         window.game.storageManager.addResources(resources);
     }
 }
-// TODO: Сделать дом, 4 вида хранилищ и ратушу

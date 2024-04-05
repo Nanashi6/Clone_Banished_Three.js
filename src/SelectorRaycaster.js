@@ -28,7 +28,7 @@ export class SelectorRaycaster {
 
         this.raycaster = new THREE.Raycaster();
 
-        this.selectorType = SelectorTypes.WoodSelector;
+        this.selectorType = SelectorTypes.Default;
         
         this.selectedObjects = undefined;
 
@@ -131,11 +131,11 @@ export class SelectorRaycaster {
         if(positions != undefined) {
             const startPos = positions[0];
             const endPos = positions[1];
-
-            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Wood && !resource.userData.collect &&
+            
+            let filteredObjects = window.game.terrainResourcesManager.TerrainResources.filter(resource => resource.userData.type === ResourceTypes.Wood && !resource.userData.collect &&
                                                 (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
-                                                (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
-                
+                                                (resource.position.z >= startPos.z && resource.position.z <= endPos.z));
+
             filteredObjects.forEach(obj => {
                 obj.collect();
             });
@@ -148,7 +148,7 @@ export class SelectorRaycaster {
             const startPos = positions[0];
             const endPos = positions[1];
 
-            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Iron && !resource.userData.collect &&
+            let filteredObjects = window.game.terrainResourcesManager.TerrainResources.filter(resource => resource.userData.type === ResourceTypes.Iron && !resource.userData.collect &&
                                                 (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
                                                 (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
                 
@@ -164,7 +164,7 @@ export class SelectorRaycaster {
             const startPos = positions[0];
             const endPos = positions[1];
 
-            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.type === ResourceTypes.Stone && !resource.userData.collect &&
+            let filteredObjects = window.game.terrainResourcesManager.TerrainResources.filter(resource => resource.userData.type === ResourceTypes.Stone && !resource.userData.collect &&
                                                 (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
                                                 (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
                 
@@ -180,7 +180,7 @@ export class SelectorRaycaster {
             const startPos = positions[0];
             const endPos = positions[1];
     
-            let filteredObjects = window.game.terrainResources.filter(resource => resource.userData.collect &&
+            let filteredObjects = window.game.terrainResourcesManager.TerrainResources.filter(resource => resource.userData.collect &&
                                                 (resource.position.x >= startPos.x && resource.position.x <= endPos.x) &&
                                                 (resource.position.z >= startPos.z && resource.position.z <= endPos.z))
                 
@@ -253,20 +253,6 @@ export class SelectorRaycaster {
         }
 
         return undefined;
-    }
-
-    /**
-     * Проверяет пересечения макета со зданиями
-     * @param {buildings} obj - Здание
-     * @returns 
-     */
-    hasIntersect(obj) {
-        // Ограничивающие объемы для BoxGeometry и PlaneGeometry
-        const boxBounds = new THREE.Box3().setFromObject(obj);
-        const planeBounds = new THREE.Box3().setFromObject();
-
-        // Проверяем пересечение между ограничивающими объемами
-        return planeBounds.intersectsBox(boxBounds);
     }
 }
 

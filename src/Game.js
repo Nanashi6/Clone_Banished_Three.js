@@ -7,6 +7,7 @@ import { TaskManager } from './TaskManager.js';
 import { Citizen } from './Objects/Citizens/Citizen.js';
 import { CreateTerrainResource } from './Objects/Resources/TerrainResources/TerrainResourcesFactory.js';
 import { SelectorRaycaster } from './SelectorRaycaster.js';
+import { TerrainResourcesManager } from './TerrainResourcesManager.js';
 
 export class Game {
     gameWindow;
@@ -20,17 +21,22 @@ export class Game {
     gridSize;
   
     plane;
-    terrainResources = [];
 
     city;
     storageManager;
     taskManager;
+    terrainResourcesManager;
 
     buildingRaycaster;
     selectorRaycaster;
   
     grid;
   
+    clock; // Учёт времени
+    dayDurationInSeconds  = 30;
+    elapsedTime = 0;
+    day = 0;
+
     constructor(gridSize) {
       this.gameWindow = document.getElementById('render-target');
   
@@ -64,9 +70,12 @@ export class Game {
       // Скрываем отображение ячеек грида
       this.grid.visible = true;
   
+      this.clock = new THREE.Clock();
+
       this.city = new City();
       this.storageManager = new StorageManager();
       this.taskManager = new TaskManager();
+      this.terrainResourcesManager = new TerrainResourcesManager();
 
       this.buildingRaycaster = new BuildingRaycaster(this.cameraManager.camera, this.plane, this.scene);
       this.selectorRaycaster = new SelectorRaycaster(this.cameraManager.camera, this.plane);
@@ -75,6 +84,17 @@ export class Game {
     }
   
     animate = () => {
+      const delta = this.clock.getDelta(); // Получаем прошедшее время с момента последнего вызова getDelta()
+      this.elapsedTime += delta; // Увеличиваем общее прошедшее время
+
+      // Проверяем, прошел ли достаточный интервал для считывания нового дня
+      if (this.elapsedTime >= this.dayDurationInSeconds) {
+        this.day++; // Определяем количество пройденных дней
+        this.elapsedTime -= this.dayDurationInSeconds;
+
+        console.log(`Наступил день ${this.day}`)
+      }
+
       window.ui.updateResourceInfoPanel(this.storageManager.ResourcesCount);
       this.city.simulate();
       this.renderer.render(this.scene, this.camera);
@@ -108,18 +128,36 @@ window.onload = () => {
     window.game.scene.add(citizen);
 
     let wood = CreateTerrainResource('Wood', 0, -5);
-    window.game.terrainResources.push(wood);
+    window.game.terrainResourcesManager.addTerrainResource(wood);
     window.game.scene.add(wood);
+
+    
+    for(let i = 0; i < 1000; i++) {
+      window.game.terrainResourcesManager.generateRandomTree();
+      window.game.terrainResourcesManager.generateRandomStone();
+      window.game.terrainResourcesManager.generateRandomIron();
+    }
 }
 
-// TODO: 4 вида рабочих зданий ( + 1 должен производить пятый ресурс)
+// TODO: класс-инициализатор
 
-// TODO: реализовать состояния жителей (влияет на скорость работы и хотьбы)
+// TODO: Если здание строится на ресурсах, то сначала убираются все пересекаемые ресурсы, а потом строится
+// TODO: перед генерацией дерева нужно проверять его на пересечение со зданиями
+
+// TODO: реализовать состояния жителей (влияет на скорость работы и хотьбы) (одно общее состояние для всего поселения)
 
 // TODO: Объекты окружения
 // TODO: класс Игрового поля с объектами (содержит метод генерации деревьев и т.д)
 
+// TODO: Освещение и тени.
+
+// TODO: Звуки постройки/сноса, фоновая музыка, звуки селекторов ресурсов
+
+// TODO: импортировать obj объекты для зданий, ресурсов и жителей
+
+// TODO: Сделать UI
 
 
-// TODO: Снос здания также через объект-обёртку над зданием (work - уничтожает здание по итогу)***
+
+// TODO: Снос здания также через объект-обёртку над зданием (work - уничтожает здание по итогу)*****
 // TODO: Сделать отрисовку селектора ресурсов***
