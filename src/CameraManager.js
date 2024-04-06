@@ -24,6 +24,7 @@ export class CameraManager {
     #Y_AXIS = new THREE.Vector3(0,1,0);
 
     camera;
+    static audioListener;
     
     #cameraOrigin = new THREE.Vector3();
     #cameraRadius = 4;

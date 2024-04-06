@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { TaskTypes } from '../../TaskManager.js';
+import { AudioManager } from '../../AudioManager.js';
 
 export class ConstructionSite extends THREE.Mesh {
     constructor(building, workScore) {
@@ -69,7 +70,7 @@ export class ConstructionSite extends THREE.Mesh {
     destroy() {
         window.game.city.removeConstructionSite(this);
         window.game.taskManager.deleteTask(this, TaskTypes.Work);
-        this.userData.building.returnResources();
+        this.userData.building.destroy();
     }
 
     clone() {

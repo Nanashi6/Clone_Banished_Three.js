@@ -131,6 +131,9 @@ export class City {
     removeCitizen(citizen) {
         let index = this.#citizens.findIndex(obj => obj === citizen); // Находим индекс объекта
         if (index !== -1) {
+            if(this.#citizens[index].userData.task != undefined) {
+                this.#citizens[index].userData.task.cancel();
+            }
             window.game.scene.remove(this.#citizens[index]);
             this.#citizens.splice(index, 1)
         }

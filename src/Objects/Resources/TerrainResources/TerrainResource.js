@@ -16,8 +16,13 @@ export class TerrainResource extends THREE.Mesh {
         this.userData.type = type;
         this.userData.workScore = 40;
         this.castShadow = true;
+        this.userData.collectTag = new THREE.Mesh(new THREE.OctahedronGeometry(0.1, 0), new THREE.MeshBasicMaterial({ color: 0xffff00}));
     }
 
+    setPosition(x, y, z) {
+        this.position.set(x, y, z);
+        this.userData.collectTag.position.set(x, y + this.geometry.parameters.height / 2 + 0.15, z);
+    }
     /**
      * Метод используется для смены состояние на доступное/недоступное для сбора
      */
@@ -25,9 +30,11 @@ export class TerrainResource extends THREE.Mesh {
         this.userData.collect = !this.userData.collect;
         if (this.userData.collect) {
             window.game.taskManager.createTask(this, TaskTypes.Collect);
+            window.game.scene.add(this.userData.collectTag);
         }
         else {
             window.game.taskManager.deleteTask(this, TaskTypes.Collect);
+            window.game.scene.remove(this.userData.collectTag);
         }
     }
 
@@ -43,6 +50,7 @@ export class TerrainResource extends THREE.Mesh {
             window.game.storageManager.addResource(this.userData.type, 1);
 
             window.game.terrainResourcesManager.removeResource(this);
+            window.game.scene.remove(this.userData.collectTag);
             window.game.scene.remove(this);
             window.game.taskManager.deleteTask(this, TaskTypes.Collect);
             return true;

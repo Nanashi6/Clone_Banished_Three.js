@@ -8,6 +8,7 @@ import { Citizen } from './Objects/Citizens/Citizen.js';
 import { CreateTerrainResource } from './Objects/Resources/TerrainResources/TerrainResourcesFactory.js';
 import { SelectorRaycaster } from './SelectorRaycaster.js';
 import { TerrainResourcesManager } from './TerrainResourcesManager.js';
+import { AudioManager } from './AudioManager.js';
 
 export class Game {
     gameWindow;
@@ -84,6 +85,7 @@ export class Game {
       this.selectorRaycaster = new SelectorRaycaster(this.cameraManager.camera, this.plane);
 
       this.#setupLights();
+      // this.inicializeSounds();
 
       this.renderer.setAnimationLoop(this.animate);
     }
@@ -135,45 +137,55 @@ export class Game {
       this.renderer.setSize(this.gameWindow.offsetWidth, this.gameWindow.offsetHeight);
     }
 }
+window.onload = async () => {
+  window.game = new Game(100);
 
-window.onload = () => {
-    window.game = new Game(100);
+  // Создание кнопки
+  const playButton = document.createElement('button');
+  playButton.textContent = 'Play Sound';
+  document.body.appendChild(playButton);
 
-    let citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
-    citizen.position.y = -0.5;
-    window.game.city.addCitizen(citizen);
+  // Обработчик события нажатия на кнопку
+  playButton.addEventListener('click', function() {
+      AudioManager.playBackgroundSound();
+  });
 
-    citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
-    citizen.position.y = -0.5;
-    citizen.position.x = 1;
-    window.game.city.addCitizen(citizen);
+  let citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+  citizen.position.y = -0.5;
+  window.game.city.addCitizen(citizen);
 
-    citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
-    citizen.position.y = -0.5;
-    citizen.position.x = -1;
-    window.game.city.addCitizen(citizen);
-    
-    for(let i = 0; i < 500; i++) {
-      window.game.terrainResourcesManager.generateRandomTree();
-      window.game.terrainResourcesManager.generateRandomStone();
-      window.game.terrainResourcesManager.generateRandomIron();
-    }
-}
+  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+  citizen.position.y = -0.5;
+  citizen.position.x = 1;
+  window.game.city.addCitizen(citizen);
 
-// TODO: требования ресурсов
+  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+  citizen.position.y = -0.5;
+  citizen.position.x = -1;
+  window.game.city.addCitizen(citizen);
+  
+  for(let i = 0; i < 500; i++) {
+    window.game.terrainResourcesManager.generateRandomTree();
+    window.game.terrainResourcesManager.generateRandomStone();
+    window.game.terrainResourcesManager.generateRandomIron();
+  }
 
-// TODO: класс-инициализатор
+  await AudioManager.initializeSounds();
+};
 
-// TODO: Объекты окружения
-// TODO: класс Игрового поля с объектами (содержит метод генерации деревьев и т.д)
+// TODO: требования ресурсов для зданий
 
-// TODO: Звуки постройки/сноса, фоновая музыка, звуки селекторов ресурсов
+// TODO: класс-инициализатор начальных жителей и построек
+
+// TODO: Объекты окружения (горы по краям карты)
 
 // TODO: импортировать obj объекты для зданий, ресурсов и жителей
 
 // TODO: Сделать UI
 
 
+
+// TODO: звуки селекторов ресурсов
+// TODO: Ограничить Полёт камеры
 // TODO: Жители не должны проходить сквозь здания
 // TODO: Снос здания также через объект-обёртку над зданием (work - уничтожает здание по итогу)*****
-// TODO: Сделать отрисовку селектора ресурсов*** (Отрисовывать на сцене каждое срабатывание onMouseMove)

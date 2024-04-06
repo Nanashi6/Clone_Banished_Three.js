@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { ResourceTypes } from 'resourceTypes';
+import { AudioManager } from '../../AudioManager.js';
 
 export class Building extends THREE.Mesh {
     requirementResource = {
@@ -43,6 +44,7 @@ export class Building extends THREE.Mesh {
      */
     startBuild() {
         let check = window.game.storageManager.reduceResources(this.requirementResource);
+        if(check) AudioManager.playBuildSound();
         return check;
     }
     
@@ -57,6 +59,8 @@ export class Building extends THREE.Mesh {
     destroy() {
         window.game.city.removeBuilding(this);
         this.returnResources();
+        
+        AudioManager.playBuildSound();
     }
 
     returnResources() {
