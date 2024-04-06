@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 export class CookHouse extends WorkBuilding {
     constructor(resourceType) {
-        super(resourceType, new THREE.BoxGeometry(5.98, 0.1, 3.98), new THREE.MeshBasicMaterial({color: 0x164972}));
+        super(resourceType, new THREE.BoxGeometry(5.98, 0.1, 3.98), new THREE.MeshPhongMaterial({color: 0x164972}));
         this.userData.workScoreMax = 50;
     }
 

@@ -12,7 +12,7 @@ export class RawFoodStorage extends StorageBuilding{
     };
 
     constructor(resourceType) {
-        super(resourceType, new THREE.BoxGeometry(1.98, 0.1, 1.98), new THREE.MeshBasicMaterial({color: 0x456498}));
+        super(resourceType, new THREE.BoxGeometry(1.98, 0.1, 1.98), new THREE.MeshPhongMaterial({color: 0x456498}));
     }
 
     endBuild() {

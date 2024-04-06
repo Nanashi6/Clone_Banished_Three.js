@@ -51,6 +51,7 @@
         <div id="render-target">
             <div class="ui">
                 <div class="building-selector">
+                    <button id="playMusic">P</button>
                     <button data-type="CancelCollect" onclick="ui.onSelectorChanged(event)">CANCEL</button>
                     <button data-type="StoneSelector" onclick="ui.onSelectorChanged(event)">STONE</button>
                     <button data-type="IronSelector" onclick="ui.onSelectorChanged(event)">IRON</button>
@@ -80,7 +81,9 @@
     {
       "imports": {
         "three": "./node_modules/three/build/three.module.js",
-        "resourceTypes": "./src/Objects/Resources/ResourceTypes.js"
+        "resourceTypes": "./src/Objects/Resources/ResourceTypes.js",
+        "mtl": "./node_modules/three/examples/jsm/loaders/MTLLoader.js",
+        "obj": "./node_modules/three/examples/jsm/loaders/OBJLoader.js"
       }
     }
 </script>

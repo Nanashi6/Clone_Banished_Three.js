@@ -3,6 +3,6 @@ import * as THREE from 'three';
 
 export class Mine extends WorkBuilding {
     constructor(resourceType) {
-        super(resourceType, new THREE.BoxGeometry(5.98, 4, 3.98), new THREE.MeshBasicMaterial({color: 0x789456}));
+        super(resourceType, new THREE.BoxGeometry(5.98, 4, 3.98), new THREE.MeshPhongMaterial({color: 0x789456}));
     }
 }

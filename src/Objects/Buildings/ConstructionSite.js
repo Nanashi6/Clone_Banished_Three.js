@@ -4,7 +4,7 @@ import { AudioManager } from '../../AudioManager.js';
 
 export class ConstructionSite extends THREE.Mesh {
     constructor(building, workScore) {
-        super(new THREE.BoxGeometry(building.geometry.parameters.width, 0.1, building.geometry.parameters.depth), new THREE.MeshBasicMaterial({color: 0x132530}));
+        super(new THREE.BoxGeometry(building.geometry.parameters.width, 0.1, building.geometry.parameters.depth), new THREE.MeshPhongMaterial({color: 0x132530}));
         this.userData.building = building;
         this.userData.workScore = workScore;
         this.userData.resourcesForCollect = [];

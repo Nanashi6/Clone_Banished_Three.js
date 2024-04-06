@@ -12,7 +12,7 @@ export class TownHall extends Building{
     };
 
     constructor() {
-        super(new THREE.BoxGeometry(5.98, 2, 5.98), new THREE.MeshBasicMaterial({color: 0x057f10}));
+        super(new THREE.BoxGeometry(5.98, 2, 5.98), new THREE.MeshPhongMaterial({color: 0x057f10}));
     }
 
     endBuild() {

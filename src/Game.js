@@ -5,7 +5,6 @@ import { City } from './City.js';
 import { StorageManager } from './StorageManager.js';
 import { TaskManager } from './TaskManager.js';
 import { Citizen } from './Objects/Citizens/Citizen.js';
-import { CreateTerrainResource } from './Objects/Resources/TerrainResources/TerrainResourcesFactory.js';
 import { SelectorRaycaster } from './SelectorRaycaster.js';
 import { TerrainResourcesManager } from './TerrainResourcesManager.js';
 import { AudioManager } from './AudioManager.js';
@@ -120,8 +119,8 @@ export class Game {
       sun.shadow.camera.right = 150;
       sun.shadow.camera.top = 120;
       sun.shadow.camera.bottom = -150;
-      sun.shadow.mapSize.width = 2048 * 0.75;
-      sun.shadow.mapSize.height = 1024 * 0.75;
+      sun.shadow.mapSize.width = 4096 //* 0.75;
+      sun.shadow.mapSize.height = 4096 //* 0.75;
       sun.shadow.camera.near = 100;
       sun.shadow.camera.far = 2000; // 4000 для 200
       sun.shadow.normalBias = 0.01;
@@ -141,33 +140,33 @@ window.onload = async () => {
   window.game = new Game(100);
 
   // Создание кнопки
-  const playButton = document.createElement('button');
-  playButton.textContent = 'Play Sound';
-  document.body.appendChild(playButton);
+  const playButton = document.getElementById('playMusic');
 
   // Обработчик события нажатия на кнопку
   playButton.addEventListener('click', function() {
       AudioManager.playBackgroundSound();
   });
 
-  let citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+  let citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff}));
   citizen.position.y = -0.5;
   window.game.city.addCitizen(citizen);
 
-  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff}));
   citizen.position.y = -0.5;
   citizen.position.x = 1;
   window.game.city.addCitizen(citizen);
 
-  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshBasicMaterial({color: 0xffffff}));
+  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff}));
   citizen.position.y = -0.5;
   citizen.position.x = -1;
   window.game.city.addCitizen(citizen);
   
-  for(let i = 0; i < 500; i++) {
+  for(let i = 0; i < 400; i++) {
     window.game.terrainResourcesManager.generateRandomTree();
-    window.game.terrainResourcesManager.generateRandomStone();
-    window.game.terrainResourcesManager.generateRandomIron();
+    if(i < 250) {
+      window.game.terrainResourcesManager.generateRandomStone();
+      window.game.terrainResourcesManager.generateRandomIron();
+    }
   }
 
   await AudioManager.initializeSounds();
@@ -179,7 +178,7 @@ window.onload = async () => {
 
 // TODO: Объекты окружения (горы по краям карты)
 
-// TODO: импортировать obj объекты для зданий, ресурсов и жителей
+// TODO: импортировать obj объекты для зданий, ресурсов и жителей*********************************************************************************
 
 // TODO: Сделать UI
 

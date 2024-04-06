@@ -11,7 +11,7 @@ export class Home extends Building{
     };
 
     constructor() {
-        super(new THREE.BoxGeometry(1.98, 2, 1.98), new THREE.MeshBasicMaterial({color: 0x00ff00}));
+        super(new THREE.BoxGeometry(1.98, 2, 1.98), new THREE.MeshPhongMaterial({color: 0x00ff00}));
     }
 
     endBuild() {
