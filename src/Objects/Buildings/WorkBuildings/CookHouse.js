@@ -17,7 +17,7 @@ export class CookHouse extends WorkBuilding {
     }
 
     work() {
-        // TODO: Готовка пока не кончится сырая пища или не заполнится склад
+        // Готовка пока не кончится сырая пища или не заполнится склад
         if(window.game.storageManager.RawFood > 0 && !window.game.storageManager.resourceIsMax(this.userData.resourceType)) {
             if(++this.userData.currentWorkScore == this.userData.workScoreMax) {
                 this.userData.currentWorkScore = 0;

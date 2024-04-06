@@ -49,7 +49,6 @@ export class Building extends THREE.Mesh {
     }
     
     endBuild() {
-        // TODO: Добавляются бонусы от здания
         throw new Error('Метод endBuild должен быть переопреден в наследниках');
     }
 

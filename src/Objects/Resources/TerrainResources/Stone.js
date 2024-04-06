@@ -32,6 +32,7 @@ export class Stone extends TerrainResource {
         .then((mesh) => {
           mesh.children.forEach((child) => {
             child.castShadow = true;
+            child.receiveShadow = true;
             self.add(child.clone());
           });
         })

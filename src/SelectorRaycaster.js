@@ -58,7 +58,6 @@ export class SelectorRaycaster {
         }
     }
 
-    // TODO: Динамическое подсвечивание выделенных ресурсов
     onMouseMove(event) {
         if (this.selectorType != SelectorTypes.Default && this.leftButtonPressed) {
             this.mousePosition.end.x = (event.clientX / window.innerWidth) * 2 - 1;

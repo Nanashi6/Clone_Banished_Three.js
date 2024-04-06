@@ -119,8 +119,8 @@ export class Game {
       sun.shadow.camera.right = 150;
       sun.shadow.camera.top = 120;
       sun.shadow.camera.bottom = -150;
-      sun.shadow.mapSize.width = 4096 //* 0.75;
-      sun.shadow.mapSize.height = 4096 //* 0.75;
+      sun.shadow.mapSize.width = 2049 //* 0.75;
+      sun.shadow.mapSize.height = 2048//* 0.75;
       sun.shadow.camera.near = 100;
       sun.shadow.camera.far = 2000; // 4000 для 200
       sun.shadow.normalBias = 0.01;
@@ -147,18 +147,16 @@ window.onload = async () => {
       AudioManager.playBackgroundSound();
   });
 
-  let citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff}));
-  citizen.position.y = -0.5;
+  let citizen = new Citizen(/*new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff})*/);
+  citizen.setPosition(0, -1, 0)
   window.game.city.addCitizen(citizen);
 
-  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff}));
-  citizen.position.y = -0.5;
-  citizen.position.x = 1;
+  citizen = new Citizen(/*new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff})*/);
+  citizen.setPosition(1, -1, 0)
   window.game.city.addCitizen(citizen);
 
-  citizen = new Citizen(new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff}));
-  citizen.position.y = -0.5;
-  citizen.position.x = -1;
+  citizen = new Citizen(/*new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff})*/);
+  citizen.setPosition(-1, -1, 0)
   window.game.city.addCitizen(citizen);
   
   for(let i = 0; i < 400; i++) {

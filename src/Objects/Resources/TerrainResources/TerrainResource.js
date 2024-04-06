@@ -14,6 +14,7 @@ export class TerrainResource extends THREE.Group {
         this.userData.type = type;
         this.userData.workScore = 40;
         this.castShadow = true;
+        this.receiveShadow = true;
         this.userData.collectTag = new THREE.Mesh(new THREE.OctahedronGeometry(0.1, 0), new THREE.MeshBasicMaterial({ color: 0xffff00}));
     }
 

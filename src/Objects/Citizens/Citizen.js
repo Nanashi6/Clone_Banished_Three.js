@@ -1,23 +1,66 @@
 import * as THREE from 'three';
 import { CitizenTypes } from './CitizenTypes.js';
+import { MTLLoader } from 'mtl';
+import { OBJLoader } from 'obj';
 import { CitizenStates } from './CitizenStates.js';
 import { ResourceTypes } from '../Resources/ResourceTypes.js';
 
-export class Citizen extends THREE.Mesh {
+export class Citizen extends THREE.Group {
     set WalkSpeed(value) { this.userData.walkSpeed = value; }
-    /**
-     * @param {CitizenTypes} type - Роль жителя
-     * @param {THREE.BufferGeometry} geometry 
-     * @param {THREE.Material} material 
-     */
-    constructor(geometry, material) {
-        super(geometry, material);
-        this.userData.currentState = CitizenStates.Idle;
-        this.userData.task = undefined;
-        this.userData.walkSpeed = 0.1;
-        this.userData.hungryDays = 0;
-        this.userData.criticalHungryDays = 3;
-        this.castShadow = true;
+    static meshPromise = null;
+  
+    constructor() {
+      super(); // Вызываем конструктор родительского класса
+  
+      this.userData.currentState = CitizenStates.Idle;
+      this.userData.task = undefined;
+      this.userData.walkSpeed = 0.1;
+      this.userData.hungryDays = 0;
+      this.userData.criticalHungryDays = 3;
+      this.castShadow = true;
+
+      if (Citizen.meshPromise === null) {
+        console.log('kmkm')
+        Citizen.meshPromise = new Promise((resolve, reject) => {
+          var mtlLoader = new MTLLoader();
+          mtlLoader.load('./src/3D_Objects/Human.mtl', function (materials) {
+            materials.preload();
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load('./src/3D_Objects/Human.obj', function (object) {
+              const mesh = object;
+              resolve(mesh);
+            }, undefined, reject);
+          });
+        });
+      }
+  
+      const self = this;
+  
+      Citizen.meshPromise
+        .then((mesh) => {
+          mesh.children.forEach((child) => {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            self.add(child.clone());
+          });
+        })
+        .catch((error) => {
+          console.error('Ошибка загрузки модели:', error);
+        });
+    }
+  
+    setPosition(x, y, z) {
+      const newPosition = new THREE.Vector3(x, y, z);
+      const deltaPosition = newPosition.clone().sub(this.position);
+      this.position.copy(newPosition);
+    
+      this.traverse(function(child) {
+        if (child !== this && child instanceof THREE.Object3D) {
+          child.position.add(deltaPosition);
+          child.updateMatrixWorld();  // Обновляем матрицу мира дочернего объекта
+        }
+      }.bind(this));
     }
 
     eat() {
@@ -60,26 +103,64 @@ export class Citizen extends THREE.Mesh {
         }
     }
 
-    walk() { // TODO: следует также учитывать препятствия в виде зданий и объектов terrain 
+     // TODO: следует также учитывать препятствия в виде зданий и объектов terrain 
+    walk() {
         let targetX = this.userData.task.target.position.x;
         let targetZ = this.userData.task.target.position.z;
-
         let citizenX = this.position.x;
         let citizenZ = this.position.z;
+      
+        let deltaX = 0, deltaZ = 0;
 
         if (targetZ - citizenZ > 0.1) {
-            this.position.z += this.userData.walkSpeed;
+          deltaZ += this.userData.walkSpeed;
+          // this.rotation.y = 0;
+        } else if (0.1 < citizenZ - targetZ) {
+          deltaZ -= this.userData.walkSpeed;
+          // this.rotation.y = -Math.PI;
         }
-        else if (0.1 < citizenZ - targetZ) {
-            this.position.z -= this.userData.walkSpeed;
-        }
-        
+      
         if (targetX - citizenX > 0.1) {
-            this.position.x += this.userData.walkSpeed;
+          deltaX += this.userData.walkSpeed;
+          // this.rotation.y = Math.PI / 2;
+        } else if (0.1 < citizenX - targetX) {
+          deltaX -= this.userData.walkSpeed;
+          // this.rotation.y = - Math.PI / 2;
         }
-        else if (0.1 < citizenX - targetX){
-            this.position.x -= this.userData.walkSpeed;
+
+        this.position.x += deltaX;
+        this.position.z += deltaZ;
+
+        //#region Rotation
+        if(deltaZ > 0 && deltaX > 0) {
+          this.rotation.y = -Math.PI * 2 * 7 / 8;
+          // this.rotation.y = -Math.PI * 2 * 5 / 8;
         }
+        else if(deltaZ > 0 && deltaX < 0) {
+          this.rotation.y = -Math.PI * 2 * 1 / 8;
+          // this.rotation.y = -Math.PI * 2 * 3 / 8;
+        }
+        else if(deltaZ > 0) {
+          this.rotation.y = Math.PI * 2 * 0 / 8;
+        }
+        else if(deltaZ < 0 && deltaX > 0) {
+          // this.rotation.y = -Math.PI * 2 * 7 / 8;
+          this.rotation.y = -Math.PI * 2 * 5 / 8;
+        }
+        else if(deltaZ < 0 && deltaX < 0) {
+          // this.rotation.y = -Math.PI * 2 * 1 / 8;
+          this.rotation.y = -Math.PI * 2 * 3 / 8;
+        }
+        else if(deltaZ < 0) {
+          this.rotation.y = Math.PI * 2 * 4 / 8;
+        }
+        else if(deltaX > 0) {
+          this.rotation.y = Math.PI * 2 * 2 / 8;
+        }
+        else if(deltaX < 0) {
+          this.rotation.y = Math.PI * 2 * 6 / 8;
+        }
+        //#endregion
     }
 
     work() {
