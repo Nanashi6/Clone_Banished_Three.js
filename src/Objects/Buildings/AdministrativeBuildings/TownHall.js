@@ -78,7 +78,7 @@ export class TownHall extends Building{
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Iron, 20);
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Wood, 20);
         window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Stone, 20);
-        // TODO: Сделать добавление жителя раз в день, если есть свободное место для жителя
+        window.game.city.CitizenPerDay += 1;
     }
 
     destroy() {
@@ -89,6 +89,7 @@ export class TownHall extends Building{
             window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Wood, -20);
             window.game.storageManager.updateResourcesMaxCount(ResourceTypes.Stone, -20);
             window.game.city.updateCitizensMaxCount(-5);
+            window.game.city.CitizenPerDay += -1;
             super.destroy();
         }
         else {

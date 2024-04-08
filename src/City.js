@@ -16,6 +16,11 @@ export class City {
 
     #citizensMaxCount = 3;
     get CitizensMaxCount() { return this.#citizensMaxCount; }
+
+    #citizenPerDay = 0;
+    get CitizenPerDay() { return this.#citizenPerDay; }
+    set CitizenPerDay(value) { this.#citizenPerDay = value; }
+
     updateCitizensMaxCount(value) {
         if(this.#citizens.length > this.#citizensMaxCount + value) {
             for(let i = 0; i < this.#citizens.length - (this.#citizensMaxCount + value); i++) {
@@ -70,7 +75,8 @@ export class City {
             obj.WalkSpeed = walkSpeed;
             obj.eat();
         });
-
+        // console.log(this.#citizenPerDay)
+        this.addCitizens(this.#citizenPerDay);
         window.ui.updateGeneralState(generalState);
     }
 
@@ -112,9 +118,12 @@ export class City {
     
     //#region Citizens
     addCitizen(citizen) {
-        if(this.#citizens.length == this.#citizensMaxCount) {
+        if(this.#citizens.length >= this.#citizensMaxCount) {
             console.error("Число жителей уже достило максимума");
             return;
+        }
+        if(citizen.position.y != -1) {
+            citizen.setPosition(0, window.game.plane.position.y, 0);
         }
         this.#citizens.push(citizen);
         window.game.scene.add(citizen);

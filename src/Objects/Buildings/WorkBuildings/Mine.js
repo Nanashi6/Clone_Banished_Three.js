@@ -14,7 +14,7 @@ export class Mine extends WorkBuilding {
     static sizeY;
 
     constructor() {
-      super(ResourceTypes.Stone);
+      super(ResourceTypes.Iron);
 
       if (Mine.meshSample === null) {
         console.log('Mine load')
