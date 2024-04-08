@@ -4,7 +4,7 @@ import { AudioManager } from '../../AudioManager.js';
 
 export class ConstructionSite extends THREE.Mesh {
     constructor(building, workScore) {
-        super(new THREE.BoxGeometry(building.geometry.parameters.width, 0.1, building.geometry.parameters.depth), new THREE.MeshPhongMaterial({color: 0x132530}));
+        super(new THREE.BoxGeometry(building.width, 0.1, building.depth), new THREE.MeshPhongMaterial({color: 0x132530}));
         this.userData.building = building;
         this.userData.workScore = workScore;
         this.userData.resourcesForCollect = [];
@@ -58,7 +58,7 @@ export class ConstructionSite extends THREE.Mesh {
 
     work() {
         if(--this.userData.workScore == 0) {
-            this.userData.building.position.set(this.position.x, window.game.plane.position.y + this.userData.building.geometry.parameters.height / 2, this.position.z);
+            this.userData.building.position.set(this.position.x, window.game.plane.position.y/* + this.userData.building.height / 2*/, this.position.z);
             this.userData.building.endBuild();
             window.game.city.addBuilding(this.userData.building);
             window.game.city.removeConstructionSite(this);

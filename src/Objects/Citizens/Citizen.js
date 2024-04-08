@@ -9,6 +9,10 @@ export class Citizen extends THREE.Group {
     set WalkSpeed(value) { this.userData.walkSpeed = value; }
     static meshPromise = null;
   
+    width = 0.2;
+    height = 1;
+    depth = 0.1;
+
     constructor() {
       super(); // Вызываем конструктор родительского класса
   
@@ -28,10 +32,22 @@ export class Citizen extends THREE.Group {
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
             objLoader.load('./src/3D_Objects/Human.obj', function (object) {
+              const boundingBox = new THREE.Box3().setFromObject(object);
+              const size = new THREE.Vector3();
+              boundingBox.getSize(size);
+              const scaleX = this.width / size.x;
+              const scaleY = this.height / size.y;
+              const scaleZ = this.depth / size.z;
+              object.scale.set(scaleX,scaleY,scaleZ);
+              object.traverse(function (object) {
+                if (object instanceof THREE.Mesh) {
+                  object.scale.set(scaleX, scaleY, scaleZ);
+                }
+              });
               const mesh = object;
               resolve(mesh);
-            }, undefined, reject);
-          });
+            }.bind(this), undefined, reject);
+          }.bind(this));
         });
       }
   

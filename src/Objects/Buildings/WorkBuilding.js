@@ -2,8 +2,8 @@ import { TaskTypes } from "../../TaskManager.js";
 import { Building } from "./Building.js";
 
 export class WorkBuilding extends Building {
-    constructor(resourceType, geometry, material) {
-        super(geometry, material);
+    constructor(resourceType/*, geometry, material*/) {
+        super(/*geometry, material*/);
         this.userData.workScoreMax = 100;
         this.userData.currentWorkScore = 0;
         this.userData.resourceType = resourceType;

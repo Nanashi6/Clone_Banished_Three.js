@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { ResourceTypes } from 'resourceTypes';
 import { AudioManager } from '../../AudioManager.js';
 
-export class Building extends THREE.Mesh {
+export class Building extends THREE.Group {
     requirementResource = {
         Iron: 0,
         Stone: 0,
@@ -11,14 +11,18 @@ export class Building extends THREE.Mesh {
         PreparedFood: 0
     };
 
+    width;
+    height;
+    depth;
+
     #returnRate = 0.4;
     
     /**
      * @param {THREE.BufferGeometry} geometry 
      * @param {THREE.Material} material 
      */
-    constructor(geometry, material) {
-        super(geometry, material);        
+    constructor(/*geometry, material*/) {
+        super(/*geometry, material*/);        
         this.castShadow = true;
     }
 

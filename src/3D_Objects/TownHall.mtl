@@ -1,0 +1,88 @@
+# Blender 4.1.0 MTL File: 'building.blend'
+# www.blender.org
+
+newmtl blinn1
+Ns 63.117920
+Ka 0.500000 0.500000 0.500000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl lambert2
+Ns 10.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd TownHall/wndw038M.jpg
+
+newmtl lambert3
+Ns 10.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd -s 0.833333 0.5 1 TownHall/slat41XL.jpg
+map_Bump -s 0.833333 0.5 1 -bm 1.000000 TownHall/slat41XLb.jpg
+
+newmtl lambert4
+Ns 10.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd TownHall/wndw107M.jpg
+map_Bump -bm 1.000000 TownHall/wndw107Mb.jpg
+
+newmtl lambert5
+Ns 10.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd -s 0.666667 0.666667 1 TownHall/brck91L.jpg
+map_Bump -s 0.666667 0.666667 1 -bm 1.000000 TownHall/brck91Lb.jpg
+
+newmtl lambert6
+Ns 10.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd TownHall/wndw038M.jpg
+map_Bump -bm 1.000000 TownHall/wndw038M.jpg
+
+newmtl lambert7
+Ns 10.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd -o 0.223711 -0.150895 0 TownHall/germany010.jpg
+map_Bump -o 0.223711 -0.150895 0 -bm 1.000000 TownHall/germany010b.jpg
+
+newmtl lambert8
+Ns 10.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd -o 0.0177543 -0.0171452 0 TownHall/ground009b.jpg
+map_Bump -o 0.0177543 -0.0171452 0 -bm 1.000000 TownHall/ground009b.jpg

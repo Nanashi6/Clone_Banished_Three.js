@@ -16,7 +16,7 @@ export function CreateTerrainResource(resourceType, x, z) {
     switch(resourceType) {
         case ResourceTypes.Wood:
             obj = new Tree();//(ResourceTypes.Wood, new THREE.BoxGeometry(0.1, 3, 0.1), new THREE.MeshLambertMaterial({color: 0x553300}));
-            obj.setPosition(x, window.game.plane.position.y/*obj.geometry.parameters.height / 2*/, z);
+            obj.setPosition(x, window.game.plane.position.y - 0.1/*obj.geometry.parameters.height / 2*/, z);
             return obj;
         case ResourceTypes.Iron:
             obj = new Iron();//(ResourceTypes.Iron, new THREE.BoxGeometry(0.3, 0.5, 0.3), new THREE.MeshLambertMaterial({color: 0x333333}));

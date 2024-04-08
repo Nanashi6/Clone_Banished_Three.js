@@ -6,7 +6,10 @@ import * as THREE from 'three';
 
 export class Tree extends TerrainResource {
     static meshPromise = null;
-  
+    width = 0.5;
+    height = 3;
+    depth = 0.5;
+
     constructor() {
       super(ResourceTypes.Wood); // Вызываем конструктор родительского класса
   
@@ -19,10 +22,22 @@ export class Tree extends TerrainResource {
             var objLoader = new OBJLoader();
             objLoader.setMaterials(materials);
             objLoader.load('./src/3D_Objects/Tree.obj', function (object) {
+              const boundingBox = new THREE.Box3().setFromObject(object);
+              const size = new THREE.Vector3();
+              boundingBox.getSize(size);
+              const scaleX = this.width / size.x;
+              const scaleY = this.height / size.y;
+              const scaleZ = this.depth / size.z;
+              object.scale.set(scaleX,scaleY,scaleZ);
+              object.traverse(function (object) {
+                if (object instanceof THREE.Mesh) {
+                  object.scale.set(scaleX, scaleY, scaleZ);
+                }
+              });
               const mesh = object;
               resolve(mesh);
-            }, undefined, reject);
-          });
+            }.bind(this), undefined, reject);
+          }.bind(this));
         });
       }
   
@@ -53,6 +68,6 @@ export class Tree extends TerrainResource {
         }
       }.bind(this));
     
-      this.userData.collectTag.position.set(x, y + 0 + 2.1, z);
+      this.userData.collectTag.position.set(x, y + 0 + 3.1, z);
     }
   }

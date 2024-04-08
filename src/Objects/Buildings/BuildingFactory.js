@@ -29,32 +29,32 @@ export function CreateBuilding(buildingType) {
             let townHall = new TownHall();
             return new ConstructionSite(townHall, 500);
         case BuildingTypes.RawFoodStorage:
-            let rawFoodStorage = new RawFoodStorage(ResourceTypes.RawFood);
+            let rawFoodStorage = new RawFoodStorage();
             return new ConstructionSite(rawFoodStorage, 75);
         case BuildingTypes.PreparedFoodStorage:
-            let preparedFoodStorage = new PreparedFoodStorage(ResourceTypes.PreparedFood);
+            let preparedFoodStorage = new PreparedFoodStorage();
             return new ConstructionSite(preparedFoodStorage, 75);
         case BuildingTypes.IronStorage:
-            let ironStorage = new IronStorage(ResourceTypes.Iron);
+            let ironStorage = new IronStorage();
             return new ConstructionSite(ironStorage, 75);
         case BuildingTypes.WoodStorage:
-            let woodStorage = new WoodStorage(ResourceTypes.Wood);
+            let woodStorage = new WoodStorage();
             return new ConstructionSite(woodStorage, 75);
         case BuildingTypes.StoneStorage:
-            let stoneStorage = new StoneStorage(ResourceTypes.Stone);
+            let stoneStorage = new StoneStorage();
             return new ConstructionSite(stoneStorage, 75);
         case BuildingTypes.Mine:
             let mine = new Mine(ResourceTypes.Iron);
             return new ConstructionSite(mine, 700);
         case BuildingTypes.Quarry:
-            let quarry = new Quarry(ResourceTypes.Stone);
+            let quarry = new Quarry();
             return new ConstructionSite(quarry, 700);
         case BuildingTypes.ForesterLodge:
-            let foresterLodge = new ForesterLodge(ResourceTypes.Wood);
+            let foresterLodge = new ForesterLodge();
             return new ConstructionSite(foresterLodge, 473);
         case BuildingTypes.Field:
-            let field = new Field(ResourceTypes.RawFood);
-            return new ConstructionSite(field, 300);
+            let field = new Field();
+            return new ConstructionSite(field, 400);
         case BuildingTypes.CookHouse:
             let cookHouse = new CookHouse(ResourceTypes.PreparedFood);
             return new ConstructionSite(cookHouse, 300);

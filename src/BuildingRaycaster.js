@@ -58,6 +58,10 @@ export class BuildingRaycaster {
         }
     }
 
+    isEven(number) {
+        return number % 2 === 0;
+    }
+
     /**
      * Устанавливает позицию макета
      * @param {event} e - Событие перемещения мыши
@@ -70,7 +74,12 @@ export class BuildingRaycaster {
             this.intersects = this.raycaster.intersectObject(this.plane);
             if(this.intersects.length > 0) {
                 const intersect = this.intersects[0];
-                const highlightPos = new THREE.Vector3().copy(intersect.point).floor();//.addScalar(0.5);
+                const highlightPos = new THREE.Vector3().copy(intersect.point).floor();
+
+                // console.log(this.isEven(this.selectedBuilding.userData.building.width + 0.02))
+
+                if(!this.isEven(this.selectedBuilding.userData.building.width + 0.02)) highlightPos.x += 0.5;
+                if(!this.isEven(this.selectedBuilding.userData.building.depth + 0.02)) highlightPos.z += 0.5;
 
                 this.highlighter.position.set(highlightPos.x, this.plane.position.y + 0.001, highlightPos.z);
         

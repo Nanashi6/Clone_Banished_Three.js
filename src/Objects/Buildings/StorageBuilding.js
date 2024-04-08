@@ -2,8 +2,8 @@ import { Building } from "./Building.js";
 import { ResourceTypes } from 'resourceTypes';
 
 export class StorageBuilding extends Building {
-    constructor(resourceType, geometry, material) {
-        super(geometry, material);
+    constructor(resourceType/*, geometry, material*/) {
+        super(/*geometry, material*/);
         this.resourceType = resourceType;
     }
 
