@@ -51,6 +51,47 @@ export class CameraManager {
         document.addEventListener('mousemove', this.onMouseMove.bind(this), false);
 
         document.addEventListener('keydown', this.OnKeyDown.bind(this), false);
+        document.addEventListener('keyup', this.OnKeyUp.bind(this), false);
+    }
+
+    codes = [
+        'KeyS',
+        'KeyW',
+        'KeyA',
+        'KeyD',
+        'ArrowUp',
+        'ArrowDown',
+        'ArrowLeft',
+        'ArrowRight'
+    ];
+
+    pressed = new Set();
+
+    simulate() {
+        let deltaY = 0;
+        let deltaX = 0;
+
+        const forward = new THREE.Vector3(0,0,1).applyAxisAngle(this.#Y_AXIS, this.#cameraAzimuth * this.#DEG2RAD);
+        const left = new THREE.Vector3(1,0,0).applyAxisAngle(this.#Y_AXIS, this.#cameraAzimuth * this.#DEG2RAD);
+
+        // Почему-то тут направления немного поменялись местами
+        if (this.pressed.has('ArrowUp') || this.pressed.has('KeyW')) {
+            deltaY += this.#cameraSpeed
+        }
+        if (this.pressed.has('ArrowDown') || this.pressed.has('KeyS')) {
+            deltaY -= this.#cameraSpeed
+        }
+        if (this.pressed.has('ArrowLeft') || this.pressed.has('KeyA')) {
+            deltaX += this.#cameraSpeed;
+        }
+        if (this.pressed.has('ArrowRight') || this.pressed.has('KeyD')) {
+            deltaX -= this.#cameraSpeed;
+        }
+        
+        this.#cameraOrigin.add(forward.multiplyScalar(this.#PAN_SENSIVITY * deltaY));
+        this.#cameraOrigin.add(left.multiplyScalar(this.#PAN_SENSIVITY * deltaX));
+
+        this.updateCameraPosition();
     }
 
     onMouseScroll(event) {
@@ -58,7 +99,7 @@ export class CameraManager {
         this.#cameraRadius = Math.min(this.#MAX_CAMERA_RADIUS, Math.max(this.#MIN_CAMERA_RADIUS, this.#cameraRadius));
     
         this.updateCameraPosition();
-      }
+    }
 
     onMouseDown(event) {
         //console.log('Down');
@@ -121,7 +162,7 @@ export class CameraManager {
     }
 
     OnKeyDown(event) {
-        let deltaY = 0;
+        /*let deltaY = 0;
         let deltaX = 0;
 
         const forward = new THREE.Vector3(0,0,1).applyAxisAngle(this.#Y_AXIS, this.#cameraAzimuth * this.#DEG2RAD);
@@ -141,7 +182,13 @@ export class CameraManager {
         this.#cameraOrigin.add(forward.multiplyScalar(this.#PAN_SENSIVITY * deltaY));
         this.#cameraOrigin.add(left.multiplyScalar(this.#PAN_SENSIVITY * deltaX));
 
-        this.updateCameraPosition();
+        this.updateCameraPosition();*/
+    
+        if(this.codes.includes(event.code)) this.pressed.add(event.code);
+    }
+
+    OnKeyUp(event) {
+        if(this.pressed.has(event.code)) this.pressed.delete(event.code);
     }
 
     updateCameraPosition() {

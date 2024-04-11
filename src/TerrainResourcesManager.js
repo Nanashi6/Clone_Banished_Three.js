@@ -101,7 +101,7 @@ export class TerrainResourcesManager {
      */ 
     getRandomPointInsideSquare(topLeftX = -50, topLeftY = -50, sideLength = 100) {
         const randomX = Math.random() * sideLength;
-        const randomY = Math.random() * sideLength;
+        const randomY = Math.random() * sideLength; /////////////////////////////////
 
         const x = topLeftX + randomX;
         const y = topLeftY + randomY;
@@ -110,15 +110,20 @@ export class TerrainResourcesManager {
     }
 
     hasIntersectWithStructures(obj) {
-        // Ограничивающие объемы для BoxGeometry и PlaneGeometry
-        const boxBounds = new THREE.Box3().setFromObject(obj);
+        // const boxBounds = new THREE.Box3().setFromObject(obj);
+        let check = false;
         window.game.city.Structures.forEach(object => {
             const planeBounds = new THREE.Box3().setFromObject(object);
-            let check = planeBounds.intersectsBox(boxBounds);
-            if(check) return true;
+            // const check = planeBounds.intersectsBox(boxBounds);
+            if(!check &&
+                planeBounds.max.x >= obj.position.x && obj.position.x >= planeBounds.min.x &&
+                planeBounds.max.z >= obj.position.z && obj.position.z >= planeBounds.min.z
+            ) {
+                // console.log(planeBounds)
+                // console.log(obj);
+                check = true;
+            }
         });
-
-        // Проверяем пересечение между ограничивающими объемами
-        return false;
+        return check;
     }
 }

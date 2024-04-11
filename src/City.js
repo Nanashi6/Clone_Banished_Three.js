@@ -14,7 +14,7 @@ export class City {
     #citizens = [];
     get Citizens() { return this.#citizens; }
 
-    #citizensMaxCount = 3;
+    #citizensMaxCount = 0;
     get CitizensMaxCount() { return this.#citizensMaxCount; }
 
     #citizenPerDay = 0;
@@ -28,6 +28,7 @@ export class City {
             }
         }
         this.#citizensMaxCount += value;
+        window.ui.updateCitizenInfoPanel(this.#citizens.length, this.#citizensMaxCount);
     }
 
     constructor() {}
@@ -127,6 +128,7 @@ export class City {
         }
         this.#citizens.push(citizen);
         window.game.scene.add(citizen);
+        window.ui.updateCitizenInfoPanel(this.#citizens.length, this.#citizensMaxCount);
     }
 
     addCitizens(newCitizensCount) {
@@ -144,6 +146,7 @@ export class City {
             window.game.scene.remove(this.#citizens[index]);
             this.#citizens.splice(index, 1)
         }
+        window.ui.updateCitizenInfoPanel(this.#citizens.length, this.#citizensMaxCount);
     }
 /*
     updateMaxCitizenCount(value) {

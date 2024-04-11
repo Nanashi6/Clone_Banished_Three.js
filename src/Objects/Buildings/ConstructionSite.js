@@ -4,13 +4,13 @@ import { AudioManager } from '../../AudioManager.js';
 
 export class ConstructionSite extends THREE.Mesh {
     constructor(building, workScore) {
-        super(new THREE.BoxGeometry(building.width, 0.1, building.depth), new THREE.MeshPhongMaterial({color: 0x132530}));
+        super(new THREE.BoxGeometry(building.Width, 0.1, building.Depth), new THREE.MeshPhongMaterial({color: 0x132530}));
         this.userData.building = building;
         this.userData.workScore = workScore;
         this.userData.resourcesForCollect = [];
         this.userData.taskCreated = false;
     }
-
+w
     setResourcesForCollect(resources) {
         this.userData.resourcesForCollect = resources;
     }
@@ -69,7 +69,7 @@ export class ConstructionSite extends THREE.Mesh {
     destroy() {
         window.game.city.removeConstructionSite(this);
         window.game.taskManager.deleteTask(this, TaskTypes.Work);
-        this.userData.building.destroy();
+        this.userData.building.returnResources();
     }
 
     clone() {

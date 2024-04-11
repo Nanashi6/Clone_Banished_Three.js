@@ -203,7 +203,8 @@ export class Citizen extends THREE.Group {
     hasIntersect(obj) {
         const boxBounds = new THREE.Box3().setFromObject(this.userData.task.target);
         const citizenBounds = new THREE.Box3().setFromObject(this);
-
+        // console.log(citizenBounds)
+        // console.log(boxBounds)
         // Проверяем пересечение между ограничивающими объемами
         return citizenBounds.intersectsBox(boxBounds);
     }

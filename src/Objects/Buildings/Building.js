@@ -32,14 +32,14 @@ export class Building extends THREE.Group {
      */
     checkRequirement() {
         // TODO: Сделать отдельный класс с методом сравнения ресурсов, чтобы не сравнивать каждый ресурс поотдельности
-        if(window.game.storageManager.Iron < this.requirementResource.Iron &&
-            window.game.storageManager.Stone < this.requirementResource.Stone &&
-            window.game.storageManager.Wood < this.requirementResource.Wood &&
-            window.game.storageManager.RawFood < this.requirementResource.RawFood &&
-            window.game.storageManager.PreparedFood < this.requirementResource.PreparedFood) {
-                return false;
+        if(window.game.storageManager.Iron >= this.requirementResource.Iron &&
+            window.game.storageManager.Stone >= this.requirementResource.Stone &&
+            window.game.storageManager.Wood >= this.requirementResource.Wood &&
+            window.game.storageManager.RawFood >= this.requirementResource.RawFood &&
+            window.game.storageManager.PreparedFood >= this.requirementResource.PreparedFood) {
+                return true;
             }
-        return true;    
+        return false;    
     }
 
     /**
@@ -62,8 +62,6 @@ export class Building extends THREE.Group {
     destroy() {
         window.game.city.removeBuilding(this);
         this.returnResources();
-        
-        AudioManager.playBuildSound();
     }
 
     returnResources() {
@@ -72,5 +70,6 @@ export class Building extends THREE.Group {
             resources[key] = this.requirementResource[key] * this.#returnRate;
         }
         window.game.storageManager.addResources(resources);
+        AudioManager.playBuildSound();
     }
 }

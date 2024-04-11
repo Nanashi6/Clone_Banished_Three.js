@@ -4,76 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/favicon.png">
-
-    <style>
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-        }
-
-        #root-window {
-            height: 100%;
-            width: 100%;
-        }
-
-        #render-target {
-            height: 100%;
-            width: 100%;
-            position: relative;
-        }
-        .ui {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            position: absolute;
-            height: auto;
-            margin-left: 1%;
-            margin-right: 1%;
-            width: 98%;
-        }
-        .building-selector {
-            display: flex;
-            flex-direction: row;
-            width: 60%;
-        }
-        .building-selector > button {
-            text-wrap: wrap;
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
-
+    <link rel="stylesheet" href="./ui_styles.css">
     <title>Game</title>
 </head>
 <body>
+    <div id="Loading-window">
+        <div id="load-info" class="load-info">Loading</div>
+    </div>
     <div id="root-window">
-        <div id="render-target">
-            <div class="ui">
-                <div class="building-selector">
-                    <button id="playMusic">P</button>
-                    <button data-type="CancelCollect" onclick="ui.onSelectorChanged(event)">CANCEL</button>
-                    <button data-type="StoneSelector" onclick="ui.onSelectorChanged(event)">STONE</button>
-                    <button data-type="IronSelector" onclick="ui.onSelectorChanged(event)">IRON</button>
-                    <button data-type="WoodSelector" onclick="ui.onSelectorChanged(event)">WOOD</button>
-                    <button data-type="AllResourceSelector" onclick="ui.onSelectorChanged(event)">ALL RESORCES</button>
-                    <button data-type="Home" onclick="ui.onToolSelected(event)">Home</button>
-                    <button data-type="ForesterLodge" onclick="ui.onToolSelected(event)">Forester Lodge</button>
-                    <button data-type="TownHall" onclick="ui.onToolSelected(event)">Town Hall</button>
-                    <button data-type="WoodStorage" onclick="ui.onToolSelected(event)">Wood Storage</button>
-                    <button data-type="RawFoodStorage" onclick="ui.onToolSelected(event)">Raw Food Storage</button>
-                    <button data-type="IronStorage" onclick="ui.onToolSelected(event)">Iron Storage</button>
-                    <button data-type="StoneStorage" onclick="ui.onToolSelected(event)">Stone Storage</button>
-                    <button data-type="PreparedFoodStorage" onclick="ui.onToolSelected(event)">Prepared Food Storage</button>
-                    <button data-type="Field" onclick="ui.onToolSelected(event)">Field</button>
-                    <button data-type="Mine" onclick="ui.onToolSelected(event)">Mine</button>
-                    <button data-type="Quarry" onclick="ui.onToolSelected(event)">Quarry</button>
-                    <button data-type="CookHouse" onclick="ui.onToolSelected(event)">Cook House</button>
-                    <button data-type="DestroySelector" onclick="ui.onSelectorChanged(event)">Destroy</button>
-                </div>
-                <div id="resourcesInfo"></div>
-                <div id="generalState"></div>
+        <div class="dropdown building-selector">
+            <button onclick="showSelectors(event)" class="dropbtn"><img class='toolbar-icon' src="./src/Images/select.png"></button>
+            <div id="myDropdown4" id="selectors" class="dropdown-content">
+                <button data-type="CancelCollect" onclick="ui.onSelectorChanged(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Cancel</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/cancel.png">
+                </button>
+                <button data-type="StoneSelector" onclick="ui.onSelectorChanged(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Collect stone</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/coal.png">
+                </button>
+                <button data-type="IronSelector" onclick="ui.onSelectorChanged(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Collect iron</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/beam.png">
+                </button>
+                <button data-type="WoodSelector" onclick="ui.onSelectorChanged(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Collect wood</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/logs.png">
+                </button>
+                <button data-type="AllResourceSelector" onclick="ui.onSelectorChanged(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Collect all resources</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/all.png">
+                </button>
+                <button data-type="DestroySelector" onclick="ui.onSelectorChanged(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Destroy buildings</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/broken.png">
+                </button>
+            </div>
+            <button onclick="showAdministrativeBuildings(event)" class="dropbtn"><img class='toolbar-icon' src="./src/Images/home.png"></button>
+            <div id="myDropdown1" id="administrativeBuildings" class="dropdown-content">
+                <button data-type="Home" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Home</div>
+                        <div>Wood - 5</div>
+                        <div>Stone - 2</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/home.png">
+                </button>
+                <button data-type="TownHall" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay end-overlay">
+                        <div>Town Hall</div>
+                        <div>Wood - 125</div>
+                        <div>Stone - 100</div>
+                        <div>Iron - 50</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/library.png">
+                </button>
+            </div>
+            <button onclick="showStorageBuildings(event)" class="dropbtn"><img class='toolbar-icon' src="./src/Images/wooden-box.png"></button>
+            <div id="myDropdown2" id="storageBuildings" class="dropdown-content">
+                <button data-type="WoodStorage" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Wood storage</div>
+                        <div>Wood - 10</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/warehouse.png">
+                </button>
+                <button data-type="RawFoodStorage" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Raw Food Storage</div>
+                        <div>Wood - 5</div>
+                        <div>Stone - 2</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/raw-materials.png">
+                </button>
+                <button data-type="IronStorage" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Iron Storage</div>
+                        <div>Wood - 5</div>
+                        <div>Stone - 2</div>
+                        <div>Iron - 5</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/pig-iron.png">
+                </button>
+                <button data-type="StoneStorage" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Stone storage</div>
+                        <div>Wood - 5</div>
+                        <div>Stone - 8</div>
+                        <div>Iron - 3</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/coal.png">
+                </button>
+                <button data-type="PreparedFoodStorage" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay end-overlay">
+                        <div>Prepared food storage</div>
+                        <div>Wood - 7</div>
+                        <div>Stone - 10</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/ingredients.png">
+                </button>
+            </div>
+            <button onclick="showWorkBuildings(event)" class="dropbtn"><img class='toolbar-icon' src="./src/Images/arrows.png"></button>
+            <div id="myDropdown3" id="workBuildings" class="dropdown-content">
+                <button data-type="ForesterLodge" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Forester Lodge</div>
+                        <div>Wood - 5</div>
+                        <div>Stone - 5</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/axe.png">
+                </button>
+                <button data-type="Field" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Field</div>
+                        <div>Wood - 10</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/barley.png">
+                </button>
+                <button data-type="Mine" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Mine</div>
+                        <div>Wood - 5</div>
+                        <div>Stone - 10</div>
+                        <div>Iron - 10</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/mine.png">
+                </button>
+                <button data-type="Quarry" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay">
+                        <div>Quarry</div>
+                        <div>Wood - 5</div>
+                        <div>Stone - 15</div>
+                        <div>Iron - 10</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/industry.png">
+                </button>
+                <button data-type="CookHouse" onclick="ui.onToolSelected(event)" class="wrap-con">
+                    <div class="overlay end-overlay">
+                        <div>Cook House</div>
+                        <div>Wood - 10</div>
+                        <div>Stone - 10</div>
+                    </div>
+                    <img class='toolbar-icon' src="./src/Images/chef.png">
+                </button>
+            </div>
+        </div> 
+        <div class="info-panel">
+            <div>
+                <img class="info-img" src="./src/Images/logs.png">
+                <div id="wood">1000/1000</div>
+            </div>
+            <div>
+                <img class="info-img" src="./src/Images/coal.png">
+                <div id="stone">1000/1000</div>
+            </div>
+            <div>
+                <img class="info-img" src="./src/Images/beam.png">
+                <div id="iron">1000/1000</div>
+            </div>
+            <div id="day">Day 1000</div>
+            <div>
+                <img class="info-img" src="./src/Images/raw-materials.png">
+                <div id="raw-food">1000/1000</div>
+            </div>
+            <div>
+                <img class="info-img" src="./src/Images/ingredients.png">
+                <div id="prepared-food">1000/1000</div>
+            </div>
+            <div>
+                <img class="info-img" src="./src/Images/people(1).png">
+                <div id="citizens">1000/1000</div>
+            </div>
         </div>
+        
+        <div id="render-target"> </div>
     </div>
 </body>
 
@@ -90,5 +206,68 @@
 
 <script type="module" src="./src/Game.js"></script>
 <script type="module" src="./src/GameUI.js"></script>
+
+<script>
+    let index = 0;
+    function showAdministrativeBuildings(event) {
+        if(index === 1) {
+            removeShow(event);
+            index = 0;
+        }
+        else {
+            index = 1;
+            removeShow(event);
+            document.getElementById("myDropdown1").classList.toggle("show");
+        }
+    }
+    function showStorageBuildings(event) {
+        if(index === 2) {
+            removeShow(event);
+            index = 0;
+        }
+        else {
+            index = 2;
+            removeShow(event);
+            document.getElementById("myDropdown2").classList.toggle("show");
+        }
+    }
+    function showWorkBuildings(event) {
+        if(index === 3) {
+            removeShow(event);
+            index = 0;
+        }
+        else {
+            index = 3;
+            removeShow(event);
+            document.getElementById("myDropdown3").classList.toggle("show");
+        }
+    }
+    function showSelectors(event) {
+        if(index === 4) {
+            removeShow(event);
+            index = 0;
+        }
+        else {
+            index = 4;
+            removeShow(event);
+            document.getElementById("myDropdown4").classList.toggle("show");
+        }
+    }
+
+
+    // Close the dropdown menu if the user clicks outside of it
+    // window.onclick = event => removeShow(event);
+    function removeShow(event) {
+        if (event.target.matches('.dropbtn') || !event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    } 
+</script>
 
 </html>

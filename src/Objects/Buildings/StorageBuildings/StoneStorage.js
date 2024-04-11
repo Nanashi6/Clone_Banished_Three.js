@@ -7,18 +7,21 @@ import { OBJLoader } from 'obj';
 
 export class StoneStorage extends StorageBuilding{
     requirementResource = {
-        Iron: 0,
-        Stone: 0,
-        Wood: 0,
+        Iron: 3,
+        Stone: 8,
+        Wood: 5,
         RawFood: 0,
         PreparedFood: 0
     };
 
     static meshPromise = null;
   
-    width = 0.98;
-    height = 1;
-    depth = 0.98;
+    static width = 0.98;
+    static height = 1;
+    static depth = 0.98;
+    get Width() { return StoneStorage.width; }
+    get Height() { return StoneStorage.height; }    
+    get Depth() { return StoneStorage.depth; }
 
     constructor() {
       super(ResourceTypes.Stone); // Вызываем конструктор родительского класса

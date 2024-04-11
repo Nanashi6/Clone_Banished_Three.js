@@ -1,49 +1,57 @@
 import { WorkBuilding } from "../WorkBuilding.js";
-import * as THREE from 'three';
-import { MTLLoader } from 'mtl';
-import { OBJLoader } from 'obj';
+// import * as THREE from 'three';
+// import { MTLLoader } from 'mtl';
+// import { OBJLoader } from 'obj';
 import { ResourceTypes } from "../../Resources/ResourceTypes.js";
 
 export class Quarry extends WorkBuilding {
+  requirementResource = {
+    Iron: 10,
+    Stone: 15,
+    Wood: 5,
+    RawFood: 0,
+    PreparedFood: 0
+  };
     static meshSample = null;
   
-    width = 5.98;
-    height = 3;
-    depth = 3.98;
-
-    static sizeY;
+    static width = 5.98;
+    static height = 3;
+    static depth = 3.98;
+    get Width() { return Quarry.width; }
+    get Height() { return Quarry.height; }    
+    get Depth() { return Quarry.depth; }
 
     constructor() {
       super(ResourceTypes.Stone);
 
-      if (Quarry.meshSample === null) {
-        console.log('Quarry load')
-        Quarry.meshSample = new Promise((resolve, reject) => {
-          var mtlLoader = new MTLLoader();
-          mtlLoader.load('./src/3D_Objects/Quarry.mtl', function (materials) {
-            materials.preload();
-            var objLoader = new OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.load('./src/3D_Objects/Quarry.obj', function (object) {
-              const boundingBox = new THREE.Box3().setFromObject(object);
-              const size = new THREE.Vector3();
-              boundingBox.getSize(size);
-              Quarry.sizeY = size.y;
-              const scaleX = this.width / size.x;
-              const scaleY = this.height / size.y;
-              const scaleZ = this.depth / size.z;
-              object.scale.set(scaleX,scaleY,scaleZ);
-              object.traverse(function (object) {
-                if (object instanceof THREE.Mesh) {
-                  object.scale.set(scaleX, scaleY, scaleZ);
-                }
-              });
-              const mesh = object;
-              resolve(mesh);
-            }.bind(this), undefined, reject);
-          }.bind(this));
-        });
-      }
+      // if (Quarry.meshSample === null) {
+      //   console.log('Quarry load')
+      //   Quarry.meshSample = new Promise((resolve, reject) => {
+      //     var mtlLoader = new MTLLoader();
+      //     mtlLoader.load('./src/3D_Objects/Quarry.mtl', function (materials) {
+      //       materials.preload();
+      //       var objLoader = new OBJLoader();
+      //       objLoader.setMaterials(materials);
+      //       objLoader.load('./src/3D_Objects/Quarry.obj', function (object) {
+      //         const boundingBox = new THREE.Box3().setFromObject(object);
+      //         const size = new THREE.Vector3();
+      //         boundingBox.getSize(size);
+      //         Quarry.sizeY = size.y;
+      //         const scaleX = this.width / size.x;
+      //         const scaleY = this.height / size.y;
+      //         const scaleZ = this.depth / size.z;
+      //         object.scale.set(scaleX,scaleY,scaleZ);
+      //         object.traverse(function (object) {
+      //           if (object instanceof THREE.Mesh) {
+      //             object.scale.set(scaleX, scaleY, scaleZ);
+      //           }
+      //         });
+      //         const mesh = object;
+      //         resolve(mesh);
+      //       }.bind(this), undefined, reject);
+      //     }.bind(this));
+      //   });
+      // }
 
       const self = this;
   

@@ -8,6 +8,3 @@ Ni 1.500000
 d 1.000000
 illum 1
 map_Kd box_Albedo.png
-map_Ks box_Metallic.png
-map_Ns box_Roughness.png
-map_Bump -bm 1.000000 box_Normal.png

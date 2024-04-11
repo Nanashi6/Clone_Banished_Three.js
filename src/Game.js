@@ -8,6 +8,7 @@ import { Citizen } from './Objects/Citizens/Citizen.js';
 import { SelectorRaycaster } from './SelectorRaycaster.js';
 import { TerrainResourcesManager } from './TerrainResourcesManager.js';
 import { AudioManager } from './AudioManager.js';
+import { Loader } from './Loader.js';
 
 export class Game {
     gameWindow;
@@ -35,13 +36,18 @@ export class Game {
     clock; // Учёт времени
     dayDurationInSeconds  = 30;
     elapsedTime = 0;
-    day = 0;
+    day = 1;
 
     constructor(gridSize) {
       this.gameWindow = document.getElementById('render-target');
   
       // Создаем сцену, камеру и рендерер
       this.scene = new THREE.Scene();
+      // const loader = new THREE.CubeTextureLoader();
+      // const texture = loader.load([
+      //   './src/Images/select.png'
+      // ]);
+      // this.scene.background = texture;
       this.scene.background = new THREE.Color(0x777777);
   
       this.cameraManager = new CameraManager(this.gameWindow);
@@ -85,11 +91,15 @@ export class Game {
 
       this.#setupLights();
       // this.inicializeSounds();
-
-      this.renderer.setAnimationLoop(this.animate);
     }
   
+    prerender = () => {
+      this.renderer.render(this.scene, this.camera);
+    }
+
     animate = () => {
+      this.cameraManager.simulate();
+
       const delta = this.clock.getDelta(); // Получаем прошедшее время с момента последнего вызова getDelta()
       this.elapsedTime += delta; // Увеличиваем общее прошедшее время
 
@@ -99,11 +109,9 @@ export class Game {
         this.elapsedTime -= this.dayDurationInSeconds;
 
         this.city.updateGeneralState(); // Обновление состояния жителей
-
-        console.log(`Наступил день ${this.day}`)
+        document.getElementById('day').innerHTML = `Day ${this.day}`;
+        // console.log(`Наступил день ${this.day}`)
       }
-
-      window.ui.updateResourceInfoPanel(this.storageManager.ResourcesCount);
       this.city.simulate();
       this.renderer.render(this.scene, this.camera);
     }
@@ -136,29 +144,43 @@ export class Game {
       this.renderer.setSize(this.gameWindow.offsetWidth, this.gameWindow.offsetHeight);
     }
 }
+
+function keydownHandler(event) {
+  document.getElementById('root-window').style.display = 'flex';
+  document.getElementById('Loading-window').style.display = 'none';
+  window.game.resizeWindow();
+  window.game.renderer.setAnimationLoop(window.game.animate);
+  AudioManager.playBackgroundSound();
+  document.removeEventListener('keydown', keydownHandler);
+}
+
 window.onload = async () => {
+  document.getElementById('day').innerHTML = `Day 1`;
+
+  await Loader.loadBuildings();
   window.game = new Game(100);
+  window.game.renderer.setAnimationLoop(window.game.prerender);
 
-  // Создание кнопки
-  const playButton = document.getElementById('playMusic');
+  await Loader.inizializeStartBuildings();
 
-  // Обработчик события нажатия на кнопку
-  playButton.addEventListener('click', function() {
-      AudioManager.playBackgroundSound();
-  });
+  await new Promise(r => setTimeout(r, 3500));
 
-  let citizen = new Citizen(/*new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff})*/);
+  console.log('Закончена загрузка текстур домов');
+
+  window.game.storageManager.addResources({Wood: 10, Stone: 10, Iron: 10, RawFood: 10, PreparedFood: 20});
+
+  let citizen = new Citizen();
   citizen.setPosition(0, -1, 0)
   window.game.city.addCitizen(citizen);
 
-  citizen = new Citizen(/*new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff})*/);
+  citizen = new Citizen();
   citizen.setPosition(1, -1, 0)
   window.game.city.addCitizen(citizen);
 
-  citizen = new Citizen(/*new THREE.BoxGeometry(0.1, 1, 0.1), new THREE.MeshLambertMaterial({color: 0xffffff})*/);
+  citizen = new Citizen();
   citizen.setPosition(-1, -1, 0)
   window.game.city.addCitizen(citizen);
-  
+
   for(let i = 0; i < 400; i++) {
     window.game.terrainResourcesManager.generateRandomTree();
     if(i < 250) {
@@ -168,27 +190,27 @@ window.onload = async () => {
   }
 
   await AudioManager.initializeSounds();
-};
+  // Добавление обработчика нажатия клавиши
+  document.addEventListener('keydown', keydownHandler);
+  document.getElementById('load-info').innerHTML = 'Press any button';
+};  
 
-// TODO: требования ресурсов для зданий
+// TODO: требования ресурсов для зданий********** + выдать начальные ресурсы при старте + убрать максимум жителей (3)
 
-// TODO: класс-инициализатор начальных жителей и построек
-
-// TODO: Объекты окружения (горы по краям карты)
-
-// TODO: информирование над зданиями о невозможности работать
-
-// TODO: Сделать экран загрузки, который прогрузит все файл, а после предложит нажать клавишу для начала игры ************************************************
-// (это позволит запустить фоновую музыку и теперь не придётся ждать загрузки файлов с объектами зданий)
+// TODO: Сделать экран загрузки + предзагружать объекты ресурсов
 
 // TODO: Сделать UI *******************************************************
+// Выводить Требования ресурсов для постройки при наведении на иконку
+// Выводить ресурсы в поселении
+// Выводить день
+// Выводить кол-во жителей
+// Выводить таски которыми занимаются жители
 
-// TODO: Преобразовать все менеджеры в статики
+// TODO: Преобразовать все менеджеры в статики (Менеджеры принимаемые ссылку на объект внутри него самого не могут быть статиками, пока так останутся)
 
 
 
-// TODO: Проследить за ростом числа жителей, чтобы их не было больше возможного
-
+// TODO: информирование над зданиями о невозможности работать
 // TODO: звуки селекторов ресурсов
 // TODO: Ограничить Полёт камеры
 // TODO: Жители не должны проходить сквозь здания

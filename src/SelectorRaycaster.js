@@ -54,7 +54,7 @@ export class SelectorRaycaster {
             window.game.scene.add(this.highlighter);
         }
         else if(event.button === 2) {
-            this.#selectorToDefault();
+            this.selectorToDefault();
         }
     }
 
@@ -226,7 +226,7 @@ export class SelectorRaycaster {
     /**
      * Метод обнуления селектора
      */
-    #selectorToDefault() {
+    selectorToDefault() {
         this.selectorType = SelectorTypes.Default;
     }
 

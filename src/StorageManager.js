@@ -117,6 +117,7 @@ export class StorageManager {
                 console.error("Указан неизвестный ресурс");
                 return false;
         }
+        window.ui.updateResourceInfoPanel(this.ResourcesCount, this.ResourcesMaxCount);
         return true;
     }
 
@@ -225,6 +226,7 @@ export class StorageManager {
                 console.error("Указан неизвестный ресурс");
                 return value;
         }
+        window.ui.updateResourceInfoPanel(this.ResourcesCount, this.ResourcesMaxCount);
         return resid;
     }
 
@@ -278,20 +280,21 @@ export class StorageManager {
                 console.error("Указан неизвестный ресурс");
                 return false;
         }
+        window.ui.updateResourceInfoPanel(this.ResourcesCount, this.ResourcesMaxCount);
         return true;
     }
 
     reduceResources(resources) {
         let check = window.game.storageManager.reduceResource(ResourceTypes.Iron, resources.Iron);
-        if(!check) return false;
+        // if(!check) return false;
         check = window.game.storageManager.reduceResource(ResourceTypes.Wood, resources.Wood);
-        if(!check) return false;
+        // if(!check) return false;
         check = window.game.storageManager.reduceResource(ResourceTypes.Stone, resources.Stone);
-        if(!check) return false;
+        // if(!check) return false;
         check = window.game.storageManager.reduceResource(ResourceTypes.RawFood, resources.RawFood);
-        if(!check) return false;
+        // if(!check) return false;
         check = window.game.storageManager.reduceResource(ResourceTypes.PreparedFood, resources.PreparedFood);
-        if(!check) return false;
+        // if(!check) return false;
         return true;
     }
 }

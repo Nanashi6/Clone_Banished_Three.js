@@ -1,56 +1,59 @@
 import { ResourceTypes } from "../../Resources/ResourceTypes.js";
 import { Building } from "../Building.js";
-import * as THREE from 'three';
+// import * as THREE from 'three';
 
-import { MTLLoader } from 'mtl';
-import { OBJLoader } from 'obj';
+// import { MTLLoader } from 'mtl';
+// import { OBJLoader } from 'obj';
 
 export class TownHall extends Building{
     requirementResource = {
-        Iron: 0,
-        Stone: 0,
-        Wood: 0,
+        Iron: 50,
+        Stone: 100,
+        Wood: 125,
         RawFood: 0,
         PreparedFood: 0
     };
 
     static meshPromise = null;
   
-    width = 5.98;
-    height = 6;
-    depth = 5.98;
+    static width = 5.98;
+    static height = 6;
+    static depth = 5.98;
+    get Width() { return TownHall.width; }
+    get Height() { return TownHall.height; }    
+    get Depth() { return TownHall.depth; }
 
     constructor() {
       super(); // Вызываем конструктор родительского класса
 
-      if (TownHall.meshPromise === null) {
-        console.log('kmkm')
-        TownHall.meshPromise = new Promise((resolve, reject) => {
-          var mtlLoader = new MTLLoader();
-          mtlLoader.load('./src/3D_Objects/TownHall.mtl', function (materials) {
-            materials.preload();
-            var objLoader = new OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.load('./src/3D_Objects/TownHall.obj', function (object) {
-              const boundingBox = new THREE.Box3().setFromObject(object);
-              const size = new THREE.Vector3();
-              boundingBox.getSize(size);
-              const scaleX = this.width / size.x;
-              const scaleY = this.height / size.y;
-              const scaleZ = this.depth / size.z;
-              object.scale.set(scaleX,scaleY,scaleZ);
-              console.log(object)
-              object.traverse(function (object) {
-                if (object instanceof THREE.Mesh) {
-                  object.scale.set(scaleX, scaleY, scaleZ);
-                }
-              });
-              const mesh = object;
-              resolve(mesh);
-            }.bind(this), undefined, reject);
-          }.bind(this));
-        });
-      }
+      // if (TownHall.meshPromise === null) {
+      //   console.log('kmkm')
+      //   TownHall.meshPromise = new Promise((resolve, reject) => {
+      //     var mtlLoader = new MTLLoader();
+      //     mtlLoader.load('./src/3D_Objects/TownHall.mtl', function (materials) {
+      //       materials.preload();
+      //       var objLoader = new OBJLoader();
+      //       objLoader.setMaterials(materials);
+      //       objLoader.load('./src/3D_Objects/TownHall.obj', function (object) {
+      //         const boundingBox = new THREE.Box3().setFromObject(object);
+      //         const size = new THREE.Vector3();
+      //         boundingBox.getSize(size);
+      //         const scaleX = this.width / size.x;
+      //         const scaleY = this.height / size.y;
+      //         const scaleZ = this.depth / size.z;
+      //         object.scale.set(scaleX,scaleY,scaleZ);
+      //         console.log(object)
+      //         object.traverse(function (object) {
+      //           if (object instanceof THREE.Mesh) {
+      //             object.scale.set(scaleX, scaleY, scaleZ);
+      //           }
+      //         });
+      //         const mesh = object;
+      //         resolve(mesh);
+      //       }.bind(this), undefined, reject);
+      //     }.bind(this));
+      //   });
+      // }
   
       const self = this;
   

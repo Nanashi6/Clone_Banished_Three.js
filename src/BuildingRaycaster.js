@@ -78,8 +78,8 @@ export class BuildingRaycaster {
 
                 // console.log(this.isEven(this.selectedBuilding.userData.building.width + 0.02))
 
-                if(!this.isEven(this.selectedBuilding.userData.building.width + 0.02)) highlightPos.x += 0.5;
-                if(!this.isEven(this.selectedBuilding.userData.building.depth + 0.02)) highlightPos.z += 0.5;
+                if(!this.isEven(this.selectedBuilding.userData.building.Width + 0.02)) highlightPos.x += 0.5;
+                if(!this.isEven(this.selectedBuilding.userData.building.Depth + 0.02)) highlightPos.z += 0.5;
 
                 this.highlighter.position.set(highlightPos.x, this.plane.position.y + 0.001, highlightPos.z);
         
@@ -101,7 +101,7 @@ export class BuildingRaycaster {
             this.#build();
         }
         else if(event.button === 2 && this.highlighter != undefined) {
-            this.#destroyHighlighter();
+            this.destroyHighlighter();
         }
     }
 
@@ -135,7 +135,7 @@ export class BuildingRaycaster {
     /**
      * Метод обнуления хайлайтера
      */
-    #destroyHighlighter() {
+    destroyHighlighter() {
         this.scene.remove(this.highlighter);
         this.highlighter = undefined;
         this.selectedBuilding = undefined;
