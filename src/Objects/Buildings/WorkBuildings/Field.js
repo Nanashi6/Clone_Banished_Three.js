@@ -6,13 +6,15 @@ import * as THREE from 'three';
 // import { OBJLoader } from 'obj';
 
 export class Field extends WorkBuilding {
+  get Info() { return `Работает на поле`};
+
   requirementResource = {
     Iron: 0,
     Stone: 0,
     Wood: 10,
     RawFood: 0,
     PreparedFood: 0
-};
+  };
     static startField = null;
   
     static width = 5.98;

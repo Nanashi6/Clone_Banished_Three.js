@@ -52,33 +52,38 @@ export class City {
         let walkSpeed = 0;
         let generalState = undefined;
         if(resources.PreparedFood > this.#citizens.length * 2) {
-            walkSpeed = GeneralStates.Excellent * 0.1;
-            generalState = 'Excellent';
+            generalState = GeneralStates.Excellent;
+            // walkSpeed = GeneralStates.Excellent * 0.1;
+            // generalState = 'Excellent';
         }
         else if(resources.PreparedFood > this.#citizens.length) {
-            walkSpeed = GeneralStates.Good * 0.1;
-            generalState = 'Good';
+            generalState = GeneralStates.Good;
+            // walkSpeed = GeneralStates.Good * 0.1;
+            // generalState = 'Good';
         }
         else if(resources.PreparedFood == this.#citizens.length) {
-            walkSpeed = GeneralStates.Normal * 0.1;  
-            generalState = 'Normal'; 
+            generalState = GeneralStates.Normal;
+            // walkSpeed = GeneralStates.Normal * 0.1;  
+            // generalState = 'Normal'; 
         }
         else if(resources.PreparedFood < this.#citizens.length / 2) {
-            walkSpeed = GeneralStates.Awful * 0.1;
-            generalState = 'Awful';
+            generalState = GeneralStates.Awful;
+            // walkSpeed = GeneralStates.Awful *0.1;
+            // generalState = 'Awful';
         }
         else if(resources.PreparedFood < this.#citizens.length) {
-            walkSpeed = GeneralStates.Bad * 0.1;
-            generalState = 'Bad';
+            generalState = GeneralStates.Bad;
+            // walkSpeed = GeneralStates.Bad * 0.1;
+            // generalState = 'Bad';
         }
 
+        this.addCitizens(this.#citizenPerDay);
+
         this.#citizens.forEach(obj => {
-            obj.WalkSpeed = walkSpeed;
+            obj.State = generalState;
             obj.eat();
         });
-        // console.log(this.#citizenPerDay)
-        this.addCitizens(this.#citizenPerDay);
-        window.ui.updateGeneralState(generalState);
+        // window.ui.updateGeneralState(generalState);
     }
 
     //#region Structures
@@ -161,10 +166,18 @@ export class City {
     //#endregion
 }
 
-const GeneralStates = {
-    Bad: 0.75, 
-    Normal: 1,
-    Awful: 0.5, 
-    Good: 1.25, 
-    Excellent: 1.5
+export const GeneralStates = {
+    Bad: 'Bad',// 0.75, 
+    Normal: 'Normal',// 1,
+    Awful: 'Awful',// 0.5, 
+    Good: 'Good',// 1.25, 
+    Excellent: 'Excellent'// 1.5
+}
+
+export const GeneralStateMultiplier = {
+    'Bad':  0.75, 
+    'Normal': 1,
+    'Awful': 0.5, 
+    'Good': 1.25, 
+    'Excellent': 1.5
 }

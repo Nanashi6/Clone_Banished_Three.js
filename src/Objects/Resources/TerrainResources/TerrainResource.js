@@ -5,6 +5,7 @@ import { TaskTypes } from '../../../TaskManager.js';
  * Представляет собой объект окружения из которого можно добыть ресурс
  */
 export class TerrainResource extends THREE.Group {
+    get Info() { return `Собирает ${this.constructor.name} \n ${this.userData.currentWorkScore}/${this.userData.workScore}`};
     /**
      * @param {ResourceType} type - Тип ресурса
      */
@@ -13,6 +14,7 @@ export class TerrainResource extends THREE.Group {
         this.userData.collect = false;
         this.userData.type = type;
         this.userData.workScore = 40;
+        this.userData.currentWorkScore = 0;
         this.castShadow = true;
         this.receiveShadow = true;
         this.userData.collectTag = new THREE.Mesh(new THREE.OctahedronGeometry(0.1, 0), new THREE.MeshBasicMaterial({ color: 0xffff00}));
@@ -45,8 +47,8 @@ export class TerrainResource extends THREE.Group {
      * @returns {boolean} - Сообщение о добыче ресурса
      */
     work() {
-        if(this.userData.collect && --this.userData.workScore == 0) { 
-            console.log(`Добыт ресурс ${this.userData.type}`);
+        if(this.userData.collect && ++this.userData.currentWorkScore == this.userData.workScore) { 
+            // console.log(`Добыт ресурс ${this.userData.type}`);
 
             // Добавление добытого ресурса на склад
             window.game.storageManager.addResource(this.userData.type, 1);

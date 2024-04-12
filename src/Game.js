@@ -112,7 +112,10 @@ export class Game {
         document.getElementById('day').innerHTML = `Day ${this.day}`;
         // console.log(`Наступил день ${this.day}`)
       }
+      
       this.city.simulate();
+      window.ui.updateTaskPanel();
+
       this.renderer.render(this.scene, this.camera);
     }
   
@@ -152,6 +155,16 @@ function keydownHandler(event) {
   window.game.renderer.setAnimationLoop(window.game.animate);
   AudioManager.playBackgroundSound();
   document.removeEventListener('keydown', keydownHandler);
+
+  let taskDiv = document.getElementById('task-panel');
+        
+  // Добавляем обработчик события наведения мыши
+  taskDiv.addEventListener('mouseover', function() {
+    document.removeEventListener('wheel', window.game.cameraManager.onMouseScrollHandler);
+  });
+  taskDiv.addEventListener('mouseout', function() {
+    document.addEventListener('wheel', window.game.cameraManager.onMouseScrollHandler);
+  });
 }
 
 window.onload = async () => {
@@ -195,16 +208,11 @@ window.onload = async () => {
   document.getElementById('load-info').innerHTML = 'Press any button';
 };  
 
-// TODO: требования ресурсов для зданий********** + выдать начальные ресурсы при старте + убрать максимум жителей (3)
-
 // TODO: Сделать экран загрузки + предзагружать объекты ресурсов
 
 // TODO: Сделать UI *******************************************************
-// Выводить Требования ресурсов для постройки при наведении на иконку
-// Выводить ресурсы в поселении
-// Выводить день
-// Выводить кол-во жителей
-// Выводить таски которыми занимаются жители
+// поправить вывод инфы о тасках (для поля сделать) перевести на английский
+// Переделать выбор здания для постройки и селекторы 
 
 // TODO: Преобразовать все менеджеры в статики (Менеджеры принимаемые ссылку на объект внутри него самого не могут быть статиками, пока так останутся)
 

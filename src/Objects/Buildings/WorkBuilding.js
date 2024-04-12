@@ -2,6 +2,8 @@ import { TaskTypes } from "../../TaskManager.js";
 import { Building } from "./Building.js";
 
 export class WorkBuilding extends Building {
+    get Info() { return `Работает на ${this.constructor.name} \n ${this.userData.currentWorkScore}/${this.userData.workScoreMax}`};
+
     constructor(resourceType/*, geometry, material*/) {
         super(/*geometry, material*/);
         this.userData.workScoreMax = 100;

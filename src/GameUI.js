@@ -32,8 +32,35 @@ export class GameUI {
         document.getElementById('citizens').innerHTML = `${citizensCount}/${citizensMaxCount}`;
     }
 
-    updateGeneralState(generalState) {
+    updateTaskPanel() {
         // document.getElementById('generalState').innerHTML = generalState;
+        const tasksDiv = document.getElementById('tasks');
+        // Удаление всех дочерних элементов
+        while (tasksDiv.firstChild) {
+            tasksDiv.removeChild(tasksDiv.firstChild);
+        }
+
+        for(let i = 0; i < window.game.city.Citizens.length; i++) {
+            // Создание родительского элемента <div>
+            var parentDiv = document.createElement('div');
+
+            // Создание дочерних элементов <div> и установка текста
+            var childDiv1 = document.createElement('div');
+            childDiv1.textContent = 'Citizen ' + i;
+
+            var childDiv2 = document.createElement('div');
+            childDiv2.textContent = window.game.city.Citizens[i].State;
+
+            var childDiv3 = document.createElement('div');
+            childDiv3.textContent = window.game.city.Citizens[i].TaskInfo;
+
+            // Добавление дочерних элементов в родительский элемент
+            parentDiv.appendChild(childDiv1);
+            parentDiv.appendChild(childDiv2);
+            parentDiv.appendChild(childDiv3);
+
+            tasksDiv.appendChild(parentDiv);
+        }
     }
 }
 

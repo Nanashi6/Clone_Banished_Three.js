@@ -67,6 +67,10 @@ export class Task {
         this.isFree = true;
     }
 
+    getInfo() {
+        return this.target.Info;
+    }
+
     accept() {
         this.isFree = false;
     }

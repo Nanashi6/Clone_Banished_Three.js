@@ -41,9 +41,10 @@ export class CameraManager {
     constructor(gameWindow) {
         this.camera = new THREE.PerspectiveCamera(75, gameWindow.offsetWidth / gameWindow.offsetHeight, 0.1, 1000);
         this.updateCameraPosition();
+        this.onMouseScrollHandler = this.onMouseScroll.bind(this);
 
         // Регистрация событий мыши
-        document.addEventListener('wheel', this.onMouseScroll.bind(this), false);
+        document.addEventListener('wheel', this.onMouseScrollHandler);
 
         document.addEventListener('mousedown', this.onMouseDown.bind(this), false);
         document.addEventListener('mouseup', this.onMouseUp.bind(this), false);

@@ -166,8 +166,63 @@ button {
     align-items: center; /* Выравнивание по вертикали */
     justify-content: center; /* Выравнивание по горизонтали */
 }
-
-#wood, #iron, #stone, #raw-food, #prepared-food, #citizens {
-
-}
 /*info-panel*/
+
+/*task-panel*/
+.task-panel {
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(102, 205, 170, 0.7);
+    right:0;
+    bottom:0;
+
+    border-radius: 10px 0 0 0;
+    width: 20%;
+    height: 30%;
+}
+
+.task-head {
+    background-color: rgba(64, 90, 148, 0.897);
+    z-index: 2;
+    width: 99%;
+    height: 10%;
+    margin: 2px auto;
+    border-radius: 10px 0 0 0;
+    border-bottom: 2px solid black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.task-head > div, .task-body > div > div {
+    width: 33.3%;
+    /* height: 100%; */
+    text-align: center;
+    vertical-align: middle;
+    /* border-style:ridge double ; */
+    border-right: 6px dotted rgba(102, 205, 170, 0.7);
+}
+.task-head > div:last-child, .task-body > div > div:last-child {
+    border-right: none;
+}
+
+
+.task-body {
+    height: 87%;
+    width: 99%;
+    margin: 0 auto;
+    overflow-y: scroll;
+    scrollbar-width:none;
+}
+
+.task-body > div {
+    min-height: 20%;
+    height: fit-content;
+    width: 100%;
+    margin: 1px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: rgba(64, 90, 148, 0.897);
+}
+/*task-panel*/

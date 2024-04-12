@@ -5,6 +5,8 @@ import { OBJLoader } from 'obj';
 import { CitizenStates } from './CitizenStates.js';
 import { ResourceTypes } from '../Resources/ResourceTypes.js';
 
+import { GeneralStates, GeneralStateMultiplier } from '../../City.js';
+
 export class Citizen extends THREE.Group {
     set WalkSpeed(value) { this.userData.walkSpeed = value; }
     static meshPromise = null;
@@ -12,6 +14,23 @@ export class Citizen extends THREE.Group {
     width = 0.2;
     height = 1;
     depth = 0.1;
+
+    state = GeneralStates.Normal;
+
+    get State() { return this.state};
+    set State(value) { 
+      this.userData.walkSpeed * GeneralStateMultiplier[value];
+      this.state = value 
+    };
+
+    get TaskInfo() {
+      if(this.userData.task != undefined) {
+        return this.userData.task.getInfo() 
+      }
+      else {
+        return 'Отдыхает';
+      }
+    };
 
     constructor() {
       super(); // Вызываем конструктор родительского класса
