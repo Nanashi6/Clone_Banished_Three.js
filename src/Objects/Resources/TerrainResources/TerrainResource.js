@@ -5,7 +5,7 @@ import { TaskTypes } from '../../../TaskManager.js';
  * Представляет собой объект окружения из которого можно добыть ресурс
  */
 export class TerrainResource extends THREE.Group {
-    get Info() { return `Собирает ${this.constructor.name} \n ${this.userData.currentWorkScore}/${this.userData.workScore}`};
+    get Info() { return `Collecting ${this.constructor.name} \n ${this.userData.currentWorkScore}/${this.userData.workScore}`};
     /**
      * @param {ResourceType} type - Тип ресурса
      */

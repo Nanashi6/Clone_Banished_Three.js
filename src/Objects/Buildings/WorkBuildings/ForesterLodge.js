@@ -74,7 +74,7 @@ export class ForesterLodge extends WorkBuilding {
     // }
 
     endBuild() {
-        console.log('создал')
+        // console.log('создал')
         this.userData.targetResource = window.game.terrainResourcesManager.getRandomTree();
         this.userData.targetResource.collect();
     }
@@ -84,7 +84,7 @@ export class ForesterLodge extends WorkBuilding {
             this.userData.targetResource = undefined;
         }
         else if(this.userData.targetResource == undefined) {
-            console.log('создал 2')
+            // console.log('создал 2')
             this.userData.targetResource = window.game.terrainResourcesManager.getRandomTree();
             this.userData.targetResource.collect();
         }

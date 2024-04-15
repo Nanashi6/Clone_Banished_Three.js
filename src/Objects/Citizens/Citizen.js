@@ -28,7 +28,7 @@ export class Citizen extends THREE.Group {
         return this.userData.task.getInfo() 
       }
       else {
-        return 'Отдыхает';
+        return 'Resting';
       }
     };
 

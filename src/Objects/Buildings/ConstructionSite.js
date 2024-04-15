@@ -3,7 +3,7 @@ import { TaskTypes } from '../../TaskManager.js';
 import { AudioManager } from '../../AudioManager.js';
 
 export class ConstructionSite extends THREE.Mesh {
-    get Info() { return `Строит ${this.userData.building.constructor.name} \n ${this.userData.currentWorkScore}/${this.userData.workScore}`};
+    get Info() { return `Builds ${this.userData.building.constructor.name} \n ${this.userData.currentWorkScore}/${this.userData.workScore}`};
     
     constructor(building, workScore) {
         super(new THREE.BoxGeometry(building.Width, 0.1, building.Depth), new THREE.MeshPhongMaterial({color: 0x132530}));

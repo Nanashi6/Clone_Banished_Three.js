@@ -6,7 +6,13 @@ import * as THREE from 'three';
 // import { OBJLoader } from 'obj';
 
 export class Field extends WorkBuilding {
-  get Info() { return `Работает на поле`};
+  get Info() {
+    if(this.userData.harvest) 
+      return `Harvesting Field \n ${this.userData.currentWorkScore}/${this.userData.harvestScore}`
+    else
+      return `Planting Field \n ${this.userData.currentWorkScore}/${this.userData.workScoreMax}`
+  };
+
 
   requirementResource = {
     Iron: 0,
