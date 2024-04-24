@@ -47,15 +47,18 @@ button {
 .building-selector {
     z-index: 1;
     padding: 4px;
-    background-color: rgba(128, 128, 128, 0.7);
+    background-color: rgba(102, 205, 170, 0.7);
     
     position: absolute;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: end;
-    width: 3%;
+    width: fit-content;
     height: fit-content;
-    top: 78%;
+    bottom: 0;
+    left: 0;
+
+    border-radius: 0 10px 0 0;
 
     /* overflow-y: scroll; */
 }
@@ -63,6 +66,10 @@ button {
     text-wrap: wrap;
     text-align: center;
     vertical-align: middle;
+}
+
+.last-dropbtn {
+    border-radius: 0 10px 0 0;
 }
 
 .toolbar-icon {
@@ -81,17 +88,25 @@ button {
 .dropdown-content {
     z-index: 1;
     padding: 4px;
-    background-color: rgba(128, 128, 128, 0.7);
-    margin: 0 0 0 100%;
+    background-color: rgba(102, 205, 170, 0.7);
+
+    top:-105%;
+    left:0;
 
     position: absolute;
     width: fit-content;
     display: none;
+
+    border-radius: 0 10px 10px 0;
 }
 
-.dropdown-content a:hover {background-color: #ddd}
+.last-wrap-con {
+    border-radius: 0 10px 10px 0;
+}
 
-.show {display:flex; flex-direction: column;}
+.dropdown-content a:hover {background-color:wheat;}
+
+.show {display:flex; flex-direction: row;}
 
 .wrap-con {
     position: relative;
@@ -100,17 +115,20 @@ button {
 .overlay { 
     z-index: 1;
     padding: 4px;
-    background-color: rgba(128, 128, 128, 0.7);
-    margin: 0 0 0 110%;
+    background-color: rgba(102, 205, 170, 0.7);
+
+    border-radius: 10px;
+
+    bottom: 117%;
+    left: 0;
+
+    font-style:initial;
 
     position: absolute;
     width: 80px;
+    height: fit-content;
     display: none;
     flex-direction: column;
-}
-
-.end-overlay {
-    top: -25px;
 }
 
 .wrap-con:hover .overlay {

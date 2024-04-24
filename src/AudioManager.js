@@ -28,37 +28,37 @@ export class AudioManager {
         });
         this.backgrounSound.setBuffer(buffer);
         this.backgrounSound.setLoop(true);
-        this.backgrounSound.setVolume(0.2);
+        this.backgrounSound.setVolume(1);
 
         buffer = await new Promise((resolve, reject) => {
             this.#audioLoader.load('./src/Sounds/build1.mp3', resolve, undefined, reject);
         });
         this.buildSounds[0].setBuffer(buffer);
-        this.buildSounds[0].setVolume(0.2);
+        this.buildSounds[0].setVolume(1);
 
         buffer = await new Promise((resolve, reject) => {
             this.#audioLoader.load('./src/Sounds/build2.mp3', resolve, undefined, reject);
         });
         this.buildSounds[1].setBuffer(buffer);
-        this.buildSounds[1].setVolume(0.2);
+        this.buildSounds[1].setVolume(1);
 
         buffer = await new Promise((resolve, reject) => {
             this.#audioLoader.load('./src/Sounds/woodCollect.mp3', resolve, undefined, reject);
         });
         this.woodCollect.setBuffer(buffer);
-        this.woodCollect.setVolume(0.2);
+        this.woodCollect.setVolume(1);
 
         buffer = await new Promise((resolve, reject) => {
             this.#audioLoader.load('./src/Sounds/ironCollect.mp3', resolve, undefined, reject);
         });
         this.ironCollect.setBuffer(buffer);
-        this.ironCollect.setVolume(0.2);
+        this.ironCollect.setVolume(1);
 
         buffer = await new Promise((resolve, reject) => {
             this.#audioLoader.load('./src/Sounds/stoneCollect.mp3', resolve, undefined, reject);
         });
         this.stoneCollect.setBuffer(buffer);
-        this.stoneCollect.setVolume(0.2);
+        this.stoneCollect.setVolume(1);
     }
 
     static playBackgroundSound() {
